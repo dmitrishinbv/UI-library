@@ -76,8 +76,8 @@ body {
     .col-11,
     .col-12 {
         width: calc(100% - 10px);
-        padding-bottom: 1.05vw;
-        padding-top: 1.05vw;
+        padding-bottom: 1vw;
+        padding-top: 1vw;
     }
 }
 
@@ -85,8 +85,8 @@ body {
 .flex-container {
     width: 100%;
     flex-direction: column;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 5px;
+    padding-left: 5px;
     box-sizing: border-box;
 }
 
@@ -95,7 +95,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    padding-bottom: 1.05vw;
+    padding-bottom: 1vw;
 }
 
 .flex-col-1 {
@@ -103,21 +103,25 @@ body {
     margin-right: 5px;
     width: calc(8.333333% - 10px);
 }
+
 .flex-col-2 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(16.666667% - 10px);
 }
+
 .flex-col-3 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(25% - 10px);
 }
+
 .flex-col-4 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(33.333333% - 10px);
 }
+
 .flex-col-5 {
     margin-left: 5px;
     margin-right: 5px;
@@ -129,31 +133,37 @@ body {
     margin-right: 5px;
     width: calc(50% - 10px);
 }
+
 .flex-col-7 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(58.333333% - 10px);
 }
+
 .flex-col-8 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(66.666667% - 10px);
 }
+
 .flex-col-9 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(75% - 10px);
 }
+
 .flex-col-10 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(83.333333% - 10px);
 }
+
 .flex-col-11 {
     margin-left: 5px;
     margin-right: 5px;
     width: calc(91.666667% - 10px);
 }
+
 .flex-col-12 {
     margin-left: 5px;
     margin-right: 5px;
@@ -183,56 +193,55 @@ body {
 /*Grid templates*/
 .grid-row {
     display: grid;
+    grid-template-columns: repeat(12, calc(100% / 12 - 1vw));
     grid-gap: 1vw;
+    padding-left: 5px;
     padding-bottom: 1vw;
-    margin-left: 5px;
-    margin-right: 5px;
 }
 
-.col1 {
-    grid-template-columns: 100%;
+.grid-col1 {
 }
 
-.col2 {
-    grid-template-columns: repeat(2, 1fr);
+.grid-col2 {
+    grid-column-end: span 2;
 }
 
-.col3 {
-    grid-template-columns: repeat(3, 1fr);
+.grid-col3 {
+    grid-column-end: span 3;
 }
 
-.col4 {
-    grid-template-columns: repeat(4, 1fr);
+.grid-col4 {
+    grid-column-end: span 4;
 }
 
-.col5 {
-    grid-template-columns: repeat(5, 1fr);
+.grid-col5 {
+    grid-column-end: span 5;
 }
 
-.col6 {
-    grid-template-columns: repeat(6, 1fr);
+.grid-col6 {
+    grid-column-end: span 6;
 }
 
-.col7 {
-    grid-template-columns: repeat(7, 1fr);
+.grid-col7 {
+    grid-column-end: span 7;
 }
 
-.col8 {
-    grid-template-columns: repeat(8, 1fr);
+.grid-col8 {
+    grid-column-end: span 8;
 }
 
-.col9 {
-    grid-template-columns: repeat(9, 1fr);
+.grid-col9 {
+    grid-column-end: span 9;
 }
 
-.col10 {
-    grid-template-columns: repeat(10, 1fr);
+.grid-col10 {
+    grid-column-end: span 10;
 }
 
-.col11 {
-    grid-template-columns: repeat(11, 1fr);
+.grid-col11 {
+    grid-column-end: span 11;
 }
 
-.col12 {
-    grid-template-columns: repeat(12, 1fr);
+.grid-col12 {
+    grid-column-end: span 12;
 }
