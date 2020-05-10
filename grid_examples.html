@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Grid</title>
+    <link rel="stylesheet" type="text/css" href="styles/grid.css"/>
+    <style>
+        .block-item {
+            padding: 5px;
+            background: darkred;
+            color: #fff;
+            border-radius: 5px;
+            border: 1px solid darkslategrey;
+            text-align: center;
+        }
+        .flex-item {
+            padding: 5px;
+            background: darkseagreen;
+            color: darkblue;
+            border-radius: 5px;
+            border: 1px solid yellow;
+            text-align: center;
+        }
+        .grid-item {
+            padding: 5px;
+            background: #000;
+            color: #fff;
+            border-radius: 5px;
+            border: 1px solid red;
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!--Inline block templates-->
+<h1 class="center">Inline Block Grid</h1>
+<div class="inline-block-row">
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-10">
+        <div class="block-item">block col-10</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-12">
+        <div class="block-item">block col-12</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-6">
+        <div class="block-item">block col-6</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-6">
+        <div class="block-item">block col-6</div>
+    </div>
+    <div class="block col-6">
+        <div class="block-item">block col-6</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-11">
+        <div class="block-item">block col-11</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-9">
+        <div class="block-item">block col-9</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-8">
+        <div class="block-item">block col-8</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-5">
+        <div class="block-item">block col-5</div>
+    </div>
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-6">
+        <div class="block-item">block col-6</div>
+    </div>
+    <div class="block col-4">
+        <div class="block-item">block col-4</div>
+    </div>
+    <div class="block col-2">
+        <div class="block-item">block col-2</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-7">
+        <div class="block-item">block col-7</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+</div>
+<div class="inline-block-row">
+    <div class="block col-9">
+        <div class="block-item">block col-9</div>
+    </div>
+    <div class="block col-1">
+        <div class="block-item">block col-1</div>
+    </div>
+    <div class="block col-3">
+        <div class="block-item">block col-3 (overflow)</div>
+    </div>
+</div>
+
+<!--Flex templates-->
+<h1 class="center">Flex Grid</h1>
+<div class="flex-container">
+    <div class="flex-row">
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-10">
+            <div class="flex-item">flex-col-10</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-12">
+            <div class="flex-item">flex-col-12</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-4">
+            <div class="flex-item">flex-col-4</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-6">
+            <div class="flex-item">flex-col-6</div>
+        </div>
+        <div class="flex-col-6">
+            <div class="flex-item">flex-col-6</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-11">
+            <div class="flex-item">flex-col-11</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+        <div class="flex-col-9">
+            <div class="flex-item">flex-col-9</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-4">
+            <div class="flex-item">flex-col-4</div>
+        </div>
+        <div class="flex-col-8">
+            <div class="flex-item">flex-col-8</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-5">
+            <div class="flex-item">flex-col-5</div>
+        </div>
+        <div class="flex-col-4">
+            <div class="flex-item">flex-col-4</div>
+        </div>
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-6">
+            <div class="flex-item">flex-col-6</div>
+        </div>
+        <div class="flex-col-4">
+            <div class="flex-item">flex-col-4</div>
+        </div>
+        <div class="flex-col-2">
+            <div class="flex-item">flex-col-2</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-7">
+            <div class="flex-item">flex-col-7</div>
+        </div>
+        <div class="flex-col-3">
+            <div class="flex-item">flex-col-3</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-11">
+            <div class="flex-item">flex-col-11</div>
+        </div>
+        <div class="flex-col-1">
+            <div class="flex-item">flex-col-1</div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="flex-col-10">
+            <div class="flex-item">flex-col-10</div>
+        </div>
+        <div class="flex-col-4">
+            <div class="flex-item">flex-col-4 (overflow)</div>
+        </div>
+    </div>
+</div>
+
+<!--Grid templates-->
+<h1 class="center">Grid</h1>
+<div class="grid-row">
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+    <div class="grid-col-1 grid-item">grid col1</div>
+</div>
+
+<div class="grid-row">
+    <div class="grid-col1 grid-item">grid col1</div>
+    <div class="grid-col2 grid-item">grid col2</div>
+</div>
+
+<div class="grid-row">
+    <div class="grid-col3 grid-item">grid col3</div>
+    <div class="grid-col3 grid-item">grid col3</div>
+    <div class="grid-col3 grid-item">grid col3</div>
+</div>
+<div class="grid-row">
+    <div class="grid-col1 grid-item">grid col1</div>
+    <div class="grid-col2 grid-item">grid col2</div>
+    <div class="grid-col3 grid-item">grid col3</div>
+    <div class="grid-col4 grid-item">grid col4</div>
+</div>
+<div class="grid-row">
+    <div class="grid-col5 grid-item">grid col5</div>
+    <div class="grid-col6 grid-item">grid col6</div>
+    <div class="grid-col1 grid-item">grid col1</div>
+</div>
+<div class="grid-row">
+    <div class="grid-col12 grid-item">grid col12</div>
+</div>
+<div class="grid-row">
+    <div class="grid-col7 grid-item">grid col7</div>
+    <div class="grid-col3 grid-item">grid col3</div>
+    <div class="grid-col1 grid-item">grid col1</div>
+    <div class="grid-col1 grid-item">grid col1</div>
+    <div class="grid-col1 grid-item">col1 overflow</div>
+</div>
