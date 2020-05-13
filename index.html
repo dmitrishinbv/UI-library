@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My First Modal Window</title>
+    <link rel="stylesheet/less" type="text/css" href="styles/my_button.less" />
+    <link rel="stylesheet/less" type="text/css" href="styles/modal.less" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+     <script>
+        function mOver(obj) {
+            obj.className = "btn-warning large border-round-5";
+            obj.innerHTML = "Thank You. Hide Me Now";
+        }
+
+        function mOut(obj) {
+            obj.className = "btn-danger large border-round-5";
+            obj.innerHTML = "Mouse Over Me";
+        }
+
+        function mClick(obj) {
+            obj.style.display = "none";
+        }
+    </script>
+</head>
+<body>
+<div class="centered">
+    <button class="btn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
+            onclick="mClick(this)">
+        Mouse Over Me</button>
+<button class="btn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
+</div>
+<div class="modal" id="send">
+    <div class="modal-header centered">
+<!--        <button class="modal-close transparent">X</button>-->
+        <h2>What is the DOM?</h2>
+    </div>
+    <div class="modal-content">
+    <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+    <p>The DOM defines a standard for accessing documents:</p>
+    <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+        interface that allows programs and scripts to dynamically access and update the
+        content, structure, and style of a document.&quot;</i></p>
+    <p>The W3C DOM standard is separated into 3 different parts:</p>
+    <ul>
+        <li>Core DOM - standard model for all document types</li>
+        <li>XML DOM - standard model for XML documents</li>
+        <li>HTML DOM - standard model for HTML documents</li>
+    </ul>
+        <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+        <p>The DOM defines a standard for accessing documents:</p>
+        <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+            interface that allows programs and scripts to dynamically access and update the
+            content, structure, and style of a document.&quot;</i></p>
+        <p>The W3C DOM standard is separated into 3 different parts:</p>
+        <ul>
+            <li>Core DOM - standard model for all document types</li>
+            <li>XML DOM - standard model for XML documents</li>
+            <li>HTML DOM - standard model for HTML documents</li>
+        </ul>
+        <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+        <p>The DOM defines a standard for accessing documents:</p>
+        <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+            interface that allows programs and scripts to dynamically access and update the
+            content, structure, and style of a document.&quot;</i></p>
+        <p>The W3C DOM standard is separated into 3 different parts:</p>
+        <ul>
+            <li>Core DOM - standard model for all document types</li>
+            <li>XML DOM - standard model for XML documents</li>
+            <li>HTML DOM - standard model for HTML documents</li>
+        </ul>
+    </div>
+    <div class = "modal-footer">
+    <button class="modal-close bottom-close-btn btn-primary border-round-5">Понятно</button>
+        <button class="btn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
+    </div>
+</div>
+</body>
+<script src="js/modal.js"></script>
+</html>
