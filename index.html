@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dmitrishin UI-Library</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+<script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="logo"><a href="#"><img src="#" alt="Logo"></a></div>
+    <div class="menu-name">MENU</div>
+    <div class="burger"><button id="menu"><i id="show-nav-top" class="mfa fas fa-bars"></i></button></div>
+        <button class="close-btn" hidden><i id="close-nav-top" class="mfa fas fa-times"></i></button>
+      <ul id="nav-top-list" class="nav-menu">
+        <li class="menu-item"><a href="#">Пункт 1</a></li>
+        <li class="menu-item"><a href="#">Пункт 2</a></li>
+        <li class="menu-item"><a href="#">Пункт 3</a></li>
+    </ul>
+</nav>
+</body>
+<script src="js/burger.js" ></script>
+<!--<script>-->
+<!--    window.onresize = function ()-->
+<!--    {-->
+<!--        if (window.matchMedia("(min-width: 600px)").matches) {-->
+<!--            location.reload();-->
+<!--            alert("aaa");-->
+<!--        }-->
+<!--    };-->
+<!--    </script>-->
+</html>

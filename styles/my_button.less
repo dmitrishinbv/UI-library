@@ -1,3 +1,21 @@
+.btn {
+  display: inline-block;
+  font-family: Helvetica, sans-serif;
+  cursor: default;
+  padding: 1vh 1vw;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    box-shadow: 0 0 10px gray;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+}
+
 .btn-col-group {
   display: inline-flex;
   font-family: Helvetica, sans-serif;
@@ -73,21 +91,3 @@ each(@btn_sizes_names, {
   }
 @index = @index + 1;
 });
-
-.btn {
-  display: inline-block;
-  font-family: Helvetica, sans-serif;
-  cursor: default;
-  padding: 1vh 1vw;
-  border: none;
-
-  &:hover {
-    cursor: pointer;
-    opacity: 0.7;
-    box-shadow: 0 0 10px gray;
-  }
-
-  &:active {
-    opacity: 1;
-  }
-}
