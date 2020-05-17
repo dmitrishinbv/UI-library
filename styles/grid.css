@@ -98,75 +98,57 @@ body {
     padding-bottom: 1vw;
 }
 
-.flex-col-1 {
+[class^=flex-col] {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.flex-col-1 {
+
     width: calc(8.333333% - 10px);
 }
 
 .flex-col-2 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(16.666667% - 10px);
 }
 
 .flex-col-3 {
-    margin-left: 5px;
-    margin-right: 5px;
-    width: calc(25% - 10px);
+      width: calc(25% - 10px);
 }
 
 .flex-col-4 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(33.333333% - 10px);
 }
 
 .flex-col-5 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(41.666667% - 10px);
 }
 
 .flex-col-6 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(50% - 10px);
 }
 
 .flex-col-7 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(58.333333% - 10px);
 }
 
 .flex-col-8 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(66.666667% - 10px);
 }
 
 .flex-col-9 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(75% - 10px);
 }
 
 .flex-col-10 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(83.333333% - 10px);
 }
 
 .flex-col-11 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(91.666667% - 10px);
 }
 
 .flex-col-12 {
-    margin-left: 5px;
-    margin-right: 5px;
     width: calc(100% - 10px);
 }
 

@@ -2,18 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dmitrishin UI-Library</title>
+    <link rel="stylesheet/less" type="text/css" href="styles/my_button.less" />
     <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
+    <link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
+    <link rel="stylesheet/less" type="text/css" href="styles/modal.less" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>  
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
-</head>
-<style>
+    <script>
+        function mOver(obj) {
+            obj.className = "btn-warning large border-round-5";
+            obj.innerHTML = "Thank You. Hide Me Now";
+        }
+
+        function mOut(obj) {
+            obj.className = "btn-danger large border-round-5";
+            obj.innerHTML = "Mouse Over Me";
+        }
+
+        function mClick(obj) {
+            obj.style.display = "none";
+        }
+    </script>
+    <style>
     h2 {
         text-align: center;
         color: #525c6a;
     }
-</style>
+    </style>
+</head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="logo"><a href="#"><img src="#" alt="Logo"></a></div>
+    <div class="menu-name">MENU</div>
+    <div class="burger"><button id="menu"><i id="show-nav-top" class="mfa fas fa-bars"></i></button></div>
+        <button class="close-btn" hidden><i id="close-nav-top" class="mfa fas fa-times"></i></button>
+      <ul id="nav-top-list" class="nav-menu">
+        <li class="menu-item"><a href="#">Пункт 1</a></li>
+        <li class="menu-item"><a href="#">Пункт 2</a></li>
+        <li class="menu-item"><a href="#">Пункт 3</a></li>
+    </ul>
+</nav>
+<div class="centered">
+    <button class="btn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
+            onclick="mClick(this)">
+        Mouse Over Me</button>
+<button class="btn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
+</div>
+<div class="modal" id="send">
+    <div class="modal-header centered">
+        <h2>What is the DOM?</h2>
+    </div>
+    <div class="modal-content">
+    <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+    <p>The DOM defines a standard for accessing documents:</p>
+    <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+        interface that allows programs and scripts to dynamically access and update the
+        content, structure, and style of a document.&quot;</i></p>
+    <p>The W3C DOM standard is separated into 3 different parts:</p>
+    <ul>
+        <li>Core DOM - standard model for all document types</li>
+        <li>XML DOM - standard model for XML documents</li>
+        <li>HTML DOM - standard model for HTML documents</li>
+    </ul>
+        <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+        <p>The DOM defines a standard for accessing documents:</p>
+        <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+            interface that allows programs and scripts to dynamically access and update the
+            content, structure, and style of a document.&quot;</i></p>
+        <p>The W3C DOM standard is separated into 3 different parts:</p>
+        <ul>
+            <li>Core DOM - standard model for all document types</li>
+            <li>XML DOM - standard model for XML documents</li>
+            <li>HTML DOM - standard model for HTML documents</li>
+        </ul>
+        <p>The DOM is a W3C (World Wide Web Consortium) standard.</p>
+        <p>The DOM defines a standard for accessing documents:</p>
+        <p><i>&quot;The W3C Document Object Model (DOM) is a platform and language-neutral
+            interface that allows programs and scripts to dynamically access and update the
+            content, structure, and style of a document.&quot;</i></p>
+        <p>The W3C DOM standard is separated into 3 different parts:</p>
+        <ul>
+            <li>Core DOM - standard model for all document types</li>
+            <li>XML DOM - standard model for XML documents</li>
+            <li>HTML DOM - standard model for HTML documents</li>
+        </ul>
+    </div>
+    <div class = "modal-footer">
+    <button class="modal-close bottom-close-btn btn-primary border-round-5">Понятно</button>
+    <button class="btn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
+    </div>
+</div>
 <h2>Carousel</h2>
 <div class="carousel-control">
     <label>Показывать картинок в окне карусели:</label>
@@ -22,9 +104,9 @@
     <input type="radio" name="display-images" class="counter"><label>три</label>
     <button class="counter" onclick="location.reload()">Применить</button>
 </div>
-<div id="carousel"  class="carousel">
-</div>
+<div id="carousel"  class="carousel"></div>
 </body>
-
+<script src="js/burger.js" ></script>
+<script src="js/modal.js"></script>
 <script src="js/carousel.js"></script>
 </html>
