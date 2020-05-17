@@ -1,4 +1,4 @@
-.btn {
+.mybtn {
   display: inline-block;
   font-family: Helvetica, sans-serif;
   cursor: default;
@@ -16,7 +16,7 @@
   }
 }
 
-.btn-col-group {
+.mybtn-col-group {
   display: inline-flex;
   font-family: Helvetica, sans-serif;
   flex-direction: column;
@@ -26,7 +26,7 @@
   text-decoration: none;
 }
 
-.btn-row-group {
+.mybtn-row-group {
   display: inline-flex;
   font-family: Helvetica, sans-serif;
   align-items: center;
@@ -34,11 +34,11 @@
   text-decoration: none;
 }
 
-.btn-col-group + .btn-col-group {
+.mybtn-col-group + .mybtn-col-group {
   margin-top: .5rem
 }
 
-.btn-row-group + .btn-row-group {
+.mybtn-row-group + .mybtn-row-group {
   margin-left: .5rem;
 }
 
@@ -51,33 +51,33 @@
   border-radius: 10px;
 }
 
-.disabled, .btn:disabled {
+.disabled, .mybtn:disabled {
   opacity: 0.4;
 }
 
-@btn_names: dark, primary, secondary, success, danger, warning, info, light, link;
-@bg_colors: black, blue, gray, green, red, yellow, #17a2b8, f8f9fa, white;
+@mybtn_names: dark, primary, secondary, success, danger, warning, info, light, link;
+@bg_colors: black, blue, gray, green, red, yellow, #17a2b8, #f8f9fa, white;
 @text_colors: white, white, white, white, white, black, white, black, blue;
 
-each(@btn_names, {
+each(@mybtn_names, {
    @index = 1;
-   .btn-@{value} {
-     .btn;
+   .mybtn-@{value} {
+     .mybtn;
      background-color: extract(@bg_colors, @index);
      color: extract(@text_colors, @index);
    }
   @index = @index + 1;
 });
 
-.btn-link:hover {
+.mybtn-link:hover {
   text-decoration: underline;
 }
 
-.btn-link:active {
+.mybtn-link:active {
   color: #7d5eff;
 }
 
-.btn-link:visited {
+.mybtn-link:visited {
   color: #b6b2de;
 }
 

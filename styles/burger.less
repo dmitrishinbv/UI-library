@@ -4,10 +4,11 @@ body {
 
 li {
   list-style-type: none;
-}
+  }
 
 a {
   color: white;
+  text-decoration: none;
 
   &:hover {
     text-decoration: none;
@@ -15,16 +16,25 @@ a {
   }
 }
 
-.logo {
+.mylogo {
   margin: 0 1vw 1vw 0;
   font-weight: bold;
   font-size: 1.5rem;
 }
 
 .navbar {
+  position: absolute;
+  background-color: #007bff !important;
+  padding: 10px;
+  width: calc(100vw - 20px);
+  margin: 0;
+  left: 0;
+  top: 0;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
+  color: white;
 }
 
 .close-btn {
@@ -36,8 +46,9 @@ a {
 }
 
 .menu-item {
-  margin-left: 1vw;
-  margin-right: 1vw;
+  padding-right: 1vw;
+  padding-left: 1vw;
+  text-decoration: none;
 }
 
 .burger {
@@ -60,25 +71,39 @@ button {
   border: none;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 
 @media only screen and (min-width: 600px) {
   .menu-name,
   .burger {
     display: none;
+    color: white;
   }
 
-
   .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 20px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
     font-family: Helvetica, sans-serif;
   }
 
   .nav-menu {
     display: flex;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .nav-menu {
+    margin-top: 0;
     margin-bottom: 0;
   }
 }
+
 

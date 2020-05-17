@@ -11,8 +11,9 @@ closeBtn.className = "modal-close";
 closeBtn.setAttribute("id", "top-close-btn");
 closeBtn.appendChild(textnode);
 document.getElementById("send").appendChild(closeBtn);
-document.getElementById("top-close-btn").style.left = "89vw";
-document.getElementById("top-close-btn").style.top = "11vh";
+document.getElementById("top-close-btn").style.left = "88%";
+document.getElementById("top-close-btn").style.top = "10%";
+document.getElementById("top-close-btn").style.color = "black";
 document.getElementById("top-close-btn").style.border = "none";
 document.getElementById("top-close-btn").style.background = "transparent";
 

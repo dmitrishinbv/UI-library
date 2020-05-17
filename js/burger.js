@@ -25,6 +25,7 @@ function showMenu() {
     nav_menu.style.flexDirection = "column";
     nav_menu.style.paddingLeft = 0;
     burger.hidden = true;
+    burger.style.display = "none";
     close_btn.hidden = false;
     for (let i=0; i < menu_items.length; i++) {
         menu_items[i].style.width = "calc(100vw - 24px)";
@@ -35,6 +36,7 @@ function showMenu() {
 }
 
 function hideMenu() {
+    burger.style.display = "block";
     close_btn.hidden = true;
     nav_menu.hidden = true;
     burger.hidden = false;

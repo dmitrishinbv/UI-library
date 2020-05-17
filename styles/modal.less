@@ -15,7 +15,7 @@
 
 .modal-header {
   background-color: #c8f6a8;
-  height: 4%;
+  height: 5%;
   color: #ff5c4d;
   .modal-main;
 
@@ -34,6 +34,7 @@
 }
 
 .modal-content {
+  color: black;
   height: 70vh;
   overflow: auto;
   background-color: #fefefe;
@@ -43,7 +44,7 @@
 .modal-footer {
   position: relative;
   background-color: #c8f6a8;
-  height: 10vh;
+  height: 9vh;
   .modal-main;
 }
 
@@ -59,6 +60,7 @@
 
 
 .centered {
+  position: relative;
   display: flex;
   padding-top: 2vw;
   justify-content: space-around;
@@ -66,7 +68,7 @@
 }
 
 .bottom-close-btn {
-   left:40%;
+   left:30%;
    margin-top: 0;
  }
 
@@ -74,4 +76,21 @@
   position: absolute;
   left:50%;
   margin-top: 0;
+}
+
+.mt-20 {
+  margin-top: 20vh;
+}
+
+@media only screen and (max-width: 600px) {
+   .large {
+     font-size: 100%;
+   }
+  .bottom-close-btn {
+    left:5%;
+  }
+  .show-another-btn {
+    left:35%;
+  }
+
 }
