@@ -5,8 +5,7 @@ let menu_items = document.getElementsByClassName("menu-item");
 burger.onclick = showMenu;
 close_btn.onclick = hideMenu;
 
-window.onresize = function ()
-{
+window.onresize = function () {
     if (window.matchMedia("(min-width: 600px)").matches) {
         // location.reload();  // not working!!!
         nav_menu.hidden = false;
@@ -27,7 +26,7 @@ function showMenu() {
     burger.hidden = true;
     burger.style.display = "none";
     close_btn.hidden = false;
-    for (let i=0; i < menu_items.length; i++) {
+    for (let i = 0; i < menu_items.length; i++) {
         menu_items[i].style.width = "calc(100vw - 24px)";
         menu_items[i].style.marginLeft = 0;
         menu_items[i].style.marginRight = 0;

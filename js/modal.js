@@ -21,7 +21,7 @@ document.getElementById("top-close-btn").style.background = "transparent";
 let close = document.getElementsByClassName("modal-close");
 
 // Add close the modal function for all buttons
-for (let i=0; i < close.length; i++) {
+for (let i = 0; i < close.length; i++) {
     close[i].onclick = () => {
         modal.style.display = "none";
     }
@@ -33,7 +33,7 @@ btn.onclick = () => {
 };
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
     }

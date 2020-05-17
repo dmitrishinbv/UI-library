@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dmitrishin UI-Library</title>
-    <link rel="stylesheet/less" type="text/css" href="styles/my_button.less" />
+    <link rel="stylesheet/less" type="text/css" href="styles/my_button.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
-    <link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
-    <link rel="stylesheet/less" type="text/css" href="styles/modal.less" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+    <link rel="stylesheet/less" type="text/css" href="styles/burger.less"/>
+    <link rel="stylesheet/less" type="text/css" href="styles/modal.less"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
     <script>
         function mOver(obj) {
@@ -34,10 +34,12 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar">
     <div class="mylogo"><a href="#"><img src="#" alt="Logo"></a></div>
     <div class="menu-name">MENU</div>
-    <div class="burger"><button id="menu"><i id="show-nav-top" class="mfa fas fa-bars"></i></button></div>
+    <div class="burger">
+        <button id="menu"><i id="show-nav-top" class="mfa fas fa-bars"></i></button>
+    </div>
     <button class="close-btn" hidden><i id="close-nav-top" class="mfa fas fa-times"></i></button>
     <ul id="nav-top-list" class="nav-menu">
         <li class="menu-item"><a href="#">Пункт 1</a></li>
@@ -48,7 +50,8 @@
 <div class="centered mt-20">
     <button class="mybtn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
             onclick="mClick(this)">
-        Mouse Over Me</button>
+        Mouse Over Me
+    </button>
     <button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
 </div>
 <div class="modal" id="send">
@@ -90,7 +93,7 @@
             <li>HTML DOM - standard model for HTML documents</li>
         </ul>
     </div>
-    <div class = "modal-footer">
+    <div class="modal-footer">
         <button class="modal-close bottom-close-btn mybtn-primary border-round-5">Понятно</button>
         <button class="mybtn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
     </div>
@@ -103,9 +106,9 @@
     <input type="radio" name="display-images" class="counter"><label class="label-carousel-control">три</label>
     <button class="mybtn-secondary border-round-5 counter" onclick="location.reload()">Применить</button>
 </div>
-<div id="carousel"  class="carousel"></div>
+<div id="carousel" class="carousel"></div>
 </body>
-<script src="js/burger.js" ></script>
+<script src="js/burger.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/carousel.js"></script>
 </html>
