@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
+    <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    h2 {
+        text-align: center;
+        color: #525c6a;
+    }
+</style>
+<body>
+<h2>Carousel</h2>
+<div class="carousel-control">
+    <label>Показывать картинок в окне карусели:</label>
+    <input type="radio" name="display-images" class="counter"><label>одну</label>
+    <input type="radio" name="display-images" class="counter"> <label>две</label>
+    <input type="radio" name="display-images" class="counter"><label>три</label>
+    <button class="counter" onclick="location.reload()">Применить</button>
+</div>
+<div id="carousel"  class="carousel">
+</div>
+</body>
+
+<script src="js/carousel.js"></script>
+</html>
