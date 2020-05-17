@@ -8,18 +8,22 @@
     <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
     <link rel="stylesheet/less" type="text/css" href="styles/modal.less" />
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>  
+=======
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+>>>>>>> Stashed changes
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
     <script>
         function mOver(obj) {
-            obj.className = "btn-warning large border-round-5";
+            obj.className = "mybtn-warning large border-round-5";
             obj.innerHTML = "Thank You. Hide Me Now";
         }
 
         function mOut(obj) {
-            obj.className = "btn-danger large border-round-5";
+            obj.className = "mybtn-danger large border-round-5";
             obj.innerHTML = "Mouse Over Me";
         }
 
@@ -31,12 +35,16 @@
     h2 {
         text-align: center;
         color: #525c6a;
+<<<<<<< Updated upstream
+=======
+        margin-top: 2vh;
+>>>>>>> Stashed changes
     }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="logo"><a href="#"><img src="#" alt="Logo"></a></div>
+    <div class="mylogo"><a href="#"><img src="#" alt="Logo"></a></div>
     <div class="menu-name">MENU</div>
     <div class="burger"><button id="menu"><i id="show-nav-top" class="mfa fas fa-bars"></i></button></div>
         <button class="close-btn" hidden><i id="close-nav-top" class="mfa fas fa-times"></i></button>
@@ -46,11 +54,11 @@
         <li class="menu-item"><a href="#">Пункт 3</a></li>
     </ul>
 </nav>
-<div class="centered">
-    <button class="btn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
+<div class="centered mt-20">
+    <button class="mybtn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
             onclick="mClick(this)">
         Mouse Over Me</button>
-<button class="btn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
+<button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
 </div>
 <div class="modal" id="send">
     <div class="modal-header centered">
@@ -92,17 +100,25 @@
         </ul>
     </div>
     <div class = "modal-footer">
-    <button class="modal-close bottom-close-btn btn-primary border-round-5">Понятно</button>
-    <button class="btn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
+    <button class="modal-close bottom-close-btn mybtn-primary border-round-5">Понятно</button>
+    <button class="mybtn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
     </div>
 </div>
 <h2>Carousel</h2>
 <div class="carousel-control">
+<<<<<<< Updated upstream
     <label>Показывать картинок в окне карусели:</label>
     <input type="radio" name="display-images" class="counter"><label>одну</label>
     <input type="radio" name="display-images" class="counter"> <label>две</label>
     <input type="radio" name="display-images" class="counter"><label>три</label>
     <button class="counter" onclick="location.reload()">Применить</button>
+=======
+    <label class="label-carousel-control">Показывать картинок в окне карусели:</label>
+    <input type="radio" name="display-images" class="counter"><label class="label-carousel-control">одну</label>
+    <input type="radio" name="display-images" class="counter"> <label class="label-carousel-control">две</label>
+    <input type="radio" name="display-images" class="counter"><label class="label-carousel-control">три</label>
+    <button class="mybtn-secondary border-round-5 counter" onclick="location.reload()">Применить</button>
+>>>>>>> Stashed changes
 </div>
 <div id="carousel"  class="carousel"></div>
 </body>

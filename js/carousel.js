@@ -12,7 +12,11 @@ const arrImg = ["https://loremflickr.com/320/240?random=1",
 let width = 320; // image width (in px)
 const clientWidth = document.documentElement.clientWidth; // user screen width (in px)
 width = clientWidth < width ? clientWidth : width;
+<<<<<<< Updated upstream
 const height = 240; // image height (in px)
+=======
+let height = calcFrameHeight(240); // image height (in px)
+>>>>>>> Stashed changes
 const count = countDisplayImages(); // how much images will be displayed in tne carousel frame
 let listElems = []; // create empty list for html "li" tags
 let carousel = document.getElementById("carousel");
@@ -21,9 +25,24 @@ let list = createGalleryList();
 
 addCarousel();
 
+<<<<<<< Updated upstream
 function countDisplayImages() {
  let countArr = document.getElementsByName('display-images');
    let counter = 1;
+=======
+
+function calcFrameHeight(height) {
+    if (width < 320) {
+        let coef = width / 320;
+        height *= coef;
+    }
+    return height;
+}
+
+function countDisplayImages() {
+    let countArr = document.getElementsByName('display-images');
+    let counter = 1;
+>>>>>>> Stashed changes
     for (let i = 0; i < countArr.length; i++) {
         if (countArr[i].checked) {
             counter = i + 1;
@@ -48,6 +67,10 @@ function addCarousel() {
         list.appendChild(element);
         let img = document.createElement("img");
         img.setAttribute("src", arrImg[i]);
+<<<<<<< Updated upstream
+=======
+        img.setAttribute("width", width);
+>>>>>>> Stashed changes
         img.setAttribute("alt", "UI-library carousel element");
         element.appendChild(img);
     }
