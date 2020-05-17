@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dmitrishin UI-Library</title>
     <link rel="stylesheet/less" type="text/css" href="styles/my_button.less" />
+    <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
+    <link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
     <link rel="stylesheet/less" type="text/css" href="styles/modal.less" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet/less" type="text/css" href="styles/burger.less" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>  
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
     <script>
@@ -26,6 +27,12 @@
             obj.style.display = "none";
         }
     </script>
+    <style>
+    h2 {
+        text-align: center;
+        color: #525c6a;
+    }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -89,7 +96,17 @@
     <button class="btn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
     </div>
 </div>
+<h2>Carousel</h2>
+<div class="carousel-control">
+    <label>Показывать картинок в окне карусели:</label>
+    <input type="radio" name="display-images" class="counter"><label>одну</label>
+    <input type="radio" name="display-images" class="counter"> <label>две</label>
+    <input type="radio" name="display-images" class="counter"><label>три</label>
+    <button class="counter" onclick="location.reload()">Применить</button>
+</div>
+<div id="carousel"  class="carousel"></div>
 </body>
 <script src="js/burger.js" ></script>
 <script src="js/modal.js"></script>
+<script src="js/carousel.js"></script>
 </html>

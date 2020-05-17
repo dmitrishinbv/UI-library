@@ -1,0 +1,62 @@
+.carousel {
+  position: relative;
+  border: 1px solid #CCC;
+  overflow: hidden;
+}
+
+.carousel img {
+  display: block;
+}
+
+.images {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: margin-left 200ms;
+  font-size: 0;
+}
+
+li {
+  display: inline-block;
+}
+
+
+.carousel-btn-prev {
+  left: 1%;
+  .btn;
+
+}
+
+.carousel-btn-next {
+  right: 1%;
+  .btn;
+}
+
+
+.btn {
+  top: 45%;
+  position: absolute;
+  border: solid 1px grey;
+  background: aliceblue;
+  opacity: 0.5;
+  font-size: large;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 1vh white;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+}
+
+.carousel-control {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2vh;
+}
+
+.counter {
+  margin-left: 2vw;
+}
