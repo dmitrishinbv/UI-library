@@ -1,0 +1,96 @@
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 10vh; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-header {
+  background-color: #c8f6a8;
+  height: 5%;
+  color: #ff5c4d;
+  .modal-main;
+
+}
+
+.modal-close {
+  position: absolute;
+  &:active,
+  &:hover,
+  &:focus {
+    outline: none;
+    color: black;
+    cursor: pointer;
+    background: transparent;
+  }
+}
+
+.modal-content {
+  color: black;
+  height: 70vh;
+  overflow: auto;
+  background-color: #fefefe;
+  .modal-main;
+}
+
+.modal-footer {
+  position: relative;
+  background-color: #c8f6a8;
+  height: 9vh;
+  .modal-main;
+}
+
+.modal-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #888;
+  margin: auto;
+  padding: 10px;
+  width: 80%;
+}
+
+
+.centered {
+  position: relative;
+  display: flex;
+  padding-top: 2vw;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottom-close-btn {
+   left:30%;
+   margin-top: 0;
+ }
+
+.show-another-btn {
+  position: absolute;
+  left:50%;
+  margin-top: 0;
+}
+
+.mt-20 {
+  margin-top: 20vh;
+}
+
+@media only screen and (max-width: 600px) {
+   .large {
+     font-size: 100%;
+   }
+  .bottom-close-btn {
+    left:5%;
+  }
+  .show-another-btn {
+    left:35%;
+  }
+
+}
