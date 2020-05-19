@@ -13,7 +13,7 @@ let width = 320; // image width (in px)
 const clientWidth = document.documentElement.clientWidth; // user screen width (in px)
 width = clientWidth < width ? clientWidth : width;
 let height = calcFrameHeight(240); // image height (in px)
-const count = countDisplayImages(); // how much images will be displayed in tne carousel frame
+const count = getImgNum(); // how much images will be displayed in tne carousel frame
 let listElems = []; // create empty list for html "li" tags
 let carousel = document.getElementById("carousel");
 let position = 0; // start carousel position
@@ -21,6 +21,16 @@ let list = createGalleryList();
 
 addCarousel();
 
+function getImgNum() {
+    let number = 1;
+    let numsArr = document.getElementsByName('display-images');
+       for (let i = 0; i < numsArr.length; i++) {
+        if (numsArr[i].checked) {
+            number = i + 1;
+        }
+    }
+    return number;
+}
 
 function calcFrameHeight(height) {
     if (width < 320) {
@@ -30,16 +40,6 @@ function calcFrameHeight(height) {
     return height;
 }
 
-function countDisplayImages() {
-    let countArr = document.getElementsByName('display-images');
-    let counter = 1;
-    for (let i = 0; i < countArr.length; i++) {
-        if (countArr[i].checked) {
-            counter = i + 1;
-        }
-    }
-    return counter;
-}
 
 // create html tag "ul" for empty unordered list
 function createGalleryList() {
@@ -62,10 +62,8 @@ function addCarousel() {
         element.appendChild(img);
     }
 
-    let marginLeft = Math.round(clientWidth / 2 - width * count / 2); // calc margin left for carousel left side
     carousel.style.width = width * count + "px"; // sets carousel width (in px)
     carousel.style.height = height + "px"; // sets carousel height (in px)
- //   carousel.style.marginLeft = marginLeft + "px"; // sets margin for carousel horizontal centering
     listElems = carousel.querySelectorAll('li'); // adds all html "li" tags to the list
     addButtons();
 }
@@ -89,7 +87,7 @@ function addButtons() {
 function prevImg() {
     position += width * count;
     position = Math.min(position, 0); // last shift may be 1 or 2 or 3 or...
- //   list.style.marginLeft = position + 'px'; // shift for prev image
+    list.style.marginLeft = position + 'px'; // shift for prev image
     checkButtons();
 }
 
@@ -97,7 +95,7 @@ function prevImg() {
 function nextImg() {
     position -= width * count;
     position = Math.max(position, -width * (listElems.length - count)); // last shift may be 1 or 2 or 3 or..
-//    list.style.marginLeft = position + 'px'; // shift for next image
+    list.style.marginLeft = position + 'px'; // shift for next image
     checkButtons();
 }
 
