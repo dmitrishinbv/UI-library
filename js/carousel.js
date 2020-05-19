@@ -65,7 +65,7 @@ function addCarousel() {
     let marginLeft = Math.round(clientWidth / 2 - width * count / 2); // calc margin left for carousel left side
     carousel.style.width = width * count + "px"; // sets carousel width (in px)
     carousel.style.height = height + "px"; // sets carousel height (in px)
-    carousel.style.marginLeft = marginLeft + "px"; // sets margin for carousel horizontal centering
+ //   carousel.style.marginLeft = marginLeft + "px"; // sets margin for carousel horizontal centering
     listElems = carousel.querySelectorAll('li'); // adds all html "li" tags to the list
     addButtons();
 }
@@ -89,7 +89,7 @@ function addButtons() {
 function prevImg() {
     position += width * count;
     position = Math.min(position, 0); // last shift may be 1 or 2 or 3 or...
-    list.style.marginLeft = position + 'px'; // shift for prev image
+ //   list.style.marginLeft = position + 'px'; // shift for prev image
     checkButtons();
 }
 
@@ -97,7 +97,7 @@ function prevImg() {
 function nextImg() {
     position -= width * count;
     position = Math.max(position, -width * (listElems.length - count)); // last shift may be 1 or 2 or 3 or..
-    list.style.marginLeft = position + 'px'; // shift for next image
+//    list.style.marginLeft = position + 'px'; // shift for next image
     checkButtons();
 }
 
