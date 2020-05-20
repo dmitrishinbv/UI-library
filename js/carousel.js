@@ -13,24 +13,13 @@ let width = 320; // image width (in px)
 const clientWidth = document.documentElement.clientWidth; // user screen width (in px)
 width = clientWidth < width ? clientWidth : width;
 let height = calcFrameHeight(240); // image height (in px)
-const count = getImgNum(); // how much images will be displayed in tne carousel frame
+const count = (localStorage.getItem('number') === null) ? 1 : localStorage.getItem('number');
 let listElems = []; // create empty list for html "li" tags
 let carousel = document.getElementById("carousel");
 let position = 0; // start carousel position
 let list = createGalleryList();
 
 addCarousel();
-
-function getImgNum() {
-    let number = 1;
-    let numsArr = document.getElementsByName('display-images');
-       for (let i = 0; i < numsArr.length; i++) {
-        if (numsArr[i].checked) {
-            number = i + 1;
-        }
-    }
-    return number;
-}
 
 function calcFrameHeight(height) {
     if (width < 320) {

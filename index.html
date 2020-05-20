@@ -101,13 +101,19 @@
 <h2>Carousel</h2>
 <div class="carousel-control">
     <label class="label-carousel-control">Показывать картинок в окне карусели:</label>
-    <input type="radio" name="display-images" class="counter"><label class="label-carousel-control">одну</label>
-    <input type="radio" name="display-images" class="counter"> <label class="label-carousel-control">две</label>
-    <input type="radio" name="display-images" class="counter"><label class="label-carousel-control">три</label>
-    <button class="mybtn-secondary border-round-5 counter-submit" onclick="location.reload()">Применить</button>
+    <button class="mybtn-info border-round-5 counter-submit" id="1" onclick="newNum (this)">1</button>
+    <button class="mybtn-info border-round-5 counter-submit" id="2" onclick="newNum (this)">2</button>
+    <button class="mybtn-info border-round-5 counter-submit" id="3" onclick="newNum (this)">3</button>
 </div>
 <div id="carousel" class="carousel"></div>
 </body>
+<script>
+    function newNum (obj) {
+        let number = obj.id;
+        localStorage.setItem('number', number);
+        location.reload();
+    }
+    </script>
 <script src="js/burger.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/carousel.js"></script>
