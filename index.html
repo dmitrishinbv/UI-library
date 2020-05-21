@@ -8,6 +8,7 @@
     <link rel="stylesheet/less" type="text/css" href="styles/carousel.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/burger.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/modal.less"/>
+    <link rel="stylesheet/less" type="text/css" href="styles/usersTable.less"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
     <script>
@@ -54,7 +55,7 @@
     </button>
     <button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
 </div>
-<div class="modal" id="send">
+<div class="modal" id="send0">
     <div class="modal-header centered">
         <h2>What is the DOM?</h2>
     </div>
@@ -93,11 +94,31 @@
             <li>HTML DOM - standard model for HTML documents</li>
         </ul>
     </div>
-    <div class="modal-footer">
-        <button class="modal-close bottom-close-btn mybtn-primary border-round-5">Понятно</button>
-        <button class="mybtn-info border-round-5 show-another-btn" id="modal2">Показать другую инфу</button>
-    </div>
+    <div class="modal-footer"></div>
 </div>
+<div class="modal" id="send1">
+    <div class="modal-header centered">
+        <h2>The Break Statement</h2>
+    </div>
+    <div class="modal-content">
+        <p>You have already seen the break statement used in an earlier chapter of this tutorial.</p>
+        <p>It was used to "jump out" of a switch() statement. The break statement can also be used to jump out of a
+            loop. </p>
+        <p>The break statement breaks the loop and continues executing the code after the loop (if any) </p>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+
+<div class="modal" id="send2">
+    <div class="modal-header centered">
+        <h2>Sorry, this material for learning not ready <i class="fas fa-exclamation-triangle"></i></h2>
+    </div>
+    <div class="modal-content">
+        <p>*******************************</p>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+
 <h2>Carousel</h2>
 <div class="carousel-control">
     <label class="label-carousel-control">Показывать картинок в окне карусели:</label>
@@ -106,15 +127,18 @@
     <button class="mybtn-info border-round-5 counter-submit" id="3" onclick="newNum (this)">3</button>
 </div>
 <div id="carousel" class="carousel"></div>
+
 </body>
 <script>
-    function newNum (obj) {
+    // save the number of images for display in one carousel frame
+    function newNum(obj) {
         let number = obj.id;
         localStorage.setItem('number', number);
         location.reload();
     }
-    </script>
+</script>
 <script src="js/burger.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/carousel.js"></script>
+<script src="js/table.js"></script>
 </html>
