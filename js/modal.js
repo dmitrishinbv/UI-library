@@ -1,45 +1,74 @@
-// Get the modal window
-let modal = document.getElementById("send");
+
+// Get the HTML collection with all modal windows
+let modalWindowArr = document.getElementsByClassName("modal");
 
 // Get the button that opens the modal
-let btn = document.getElementById("modal-open");
+document.getElementById("modal-open").onclick = () => {
+    modalWindowArr[0].style.display = "block";
+};
 
-// Append close button in right-top corner of the modal window
-let closeBtn = document.createElement("button");
-let textnode = document.createTextNode("X");
-closeBtn.className = "modal-close";
-closeBtn.setAttribute("id", "top-close-btn");
-closeBtn.appendChild(textnode);
-document.getElementById("send").appendChild(closeBtn);
-document.getElementById("top-close-btn").style.left = "88%";
-document.getElementById("top-close-btn").style.top = "10%";
-document.getElementById("top-close-btn").style.color = "black";
-document.getElementById("top-close-btn").style.border = "none";
-document.getElementById("top-close-btn").style.background = "transparent";
 
-// Get the HTML collection with buttons that closes the modal
-let close = document.getElementsByClassName("modal-close");
+for (let i = 0; i < modalWindowArr.length; i++) {
+  addElements(modalWindowArr[i], i);
+}
 
-// Add close the modal function for all buttons
-for (let i = 0; i < close.length; i++) {
-    close[i].onclick = () => {
-        modal.style.display = "none";
+
+function addElements(modalWindow, counter) {
+
+    // Append close button in right-top corner of the modal window
+    let topCloseBtn = createHtmlElement("button", modalWindow, "X",
+        new Map ([["id", `${counter}`]]), "top-close-btn");
+
+    topCloseBtn.onclick = () => {
+        document.getElementById("send"+counter).style.display = "none";
+    };
+
+    let footer = document.getElementsByClassName("modal-footer")[counter];
+    let bottomBtn = createHtmlElement("button", footer, "Показать другую инфу",
+        new Map ([["id", "modal"+`${counter}`]]),"mybtn-info border-round-5 show-another-btn");
+
+    bottomBtn.onclick = () => {
+        showNextModal (modalWindow, counter);
+    };
+
+    let closeBtn = createHtmlElement("button", footer, "Понятно",
+        null,"bottom-close-btn mybtn-primary border-round-5");
+
+    closeBtn.onclick = () => {
+        closeAll();
+    };
+}
+
+function showNextModal(modalWindow, counter) {
+    counter++;
+    modalWindowArr[counter].style.display = "block";
+    addElements(modalWindowArr[counter], counter);
+}
+
+function closeAll() {
+    for (let i = 0; i < modalWindowArr.length; i++) {
+        document.getElementById("send"+i).style.display = "none";
     }
 }
 
-//  Open the modal
-btn.onclick = () => {
-    modal.style.display = "block";
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
+function createHtmlElement (tagName, parent, innerText = null, tagArrAttr = null, tagClass = null) {
+    let newTag = document.createElement (tagName);
+    if (innerText !== null) {
+        let text = document.createTextNode(innerText);
+        newTag.appendChild(text);
     }
-};
 
-document.getElementById("modal2").onclick = () => {
-    alert("Opps... Another modal window currently not appended to this site");
-};
+    if (tagArrAttr !== null) {
+         tagArrAttr.forEach ((value, key, map) => {
+          newTag.setAttribute(`${key}`, `${value}`);
+         });
+    }
 
+    if (tagClass !== null) {
+        newTag.className = tagClass;
+    }
+
+    (parent === null) ? document.appendChild (newTag) : parent.appendChild (newTag);
+
+    return newTag;
+}

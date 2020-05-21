@@ -7,7 +7,6 @@ close_btn.onclick = hideMenu;
 
 window.onresize = function () {
     if (window.matchMedia("(min-width: 600px)").matches) {
-        // location.reload();  // not working!!!
         nav_menu.hidden = false;
         close_btn.hidden = true;
     }
