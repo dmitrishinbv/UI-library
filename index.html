@@ -11,26 +11,16 @@
     <link rel="stylesheet/less" type="text/css" href="styles/usersTable.less"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
-    <script>
-        function mOver(obj) {
-            obj.className = "mybtn-warning large border-round-5";
-            obj.innerHTML = "Thank You. Hide Me Now";
-        }
-
-        function mOut(obj) {
-            obj.className = "mybtn-danger large border-round-5";
-            obj.innerHTML = "Mouse Over Me";
-        }
-
-        function mClick(obj) {
-            obj.style.display = "none";
-        }
-    </script>
     <style>
         h2 {
             text-align: center;
             color: #525c6a;
             margin-top: 2vh;
+        }
+        hr {
+            color: #93a4bc;
+            border-width: 1px;
+            width: 90vw;
         }
     </style>
 </head>
@@ -49,12 +39,9 @@
     </ul>
 </nav>
 <div class="centered mt-20">
-    <button class="mybtn-danger large border-round-5" onmouseover="mOver(this)" onmouseout="mOut(this)"
-            onclick="mClick(this)">
-        Mouse Over Me
-    </button>
     <button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>
 </div>
+<hr>
 <div class="modal" id="send0">
     <div class="modal-header centered">
         <h2>What is the DOM?</h2>
@@ -127,8 +114,9 @@
     <button class="mybtn-info border-round-5 counter-submit" id="3" onclick="newNum (this)">3</button>
 </div>
 <div id="carousel" class="carousel"></div>
-
-</body>
+<hr>
+<h2>User table</h2>
+<div id="usersTable" class="users-table"></div>
 <script>
     // save the number of images for display in one carousel frame
     function newNum(obj) {
@@ -138,7 +126,8 @@
     }
 </script>
 <script src="js/burger.js"></script>
-<script src="js/modal.js"></script>
+<script src="js/modal.js" type="module"></script>
 <script src="js/carousel.js"></script>
-<script src="js/table.js"></script>
+<script src="js/table.js" type="module"></script>
+</body>
 </html>
