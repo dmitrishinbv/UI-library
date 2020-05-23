@@ -1,6 +1,7 @@
 import {createHtmlElement} from "./main.js";
 
-const sortButtonsIcons = ["fa-sort", "fa-sort-up", "fa-sort-down"];
+const sortButtonsIcons = ["fa-sort", "fa-sort-alpha-up", "fa-sort-alpha-down"];
+const sortButtonsIconsNumeric = ["fa-sort", "fa-sort-numeric-up-alt", "fa-sort-numeric-down-alt"];
 let columnSortStates = [];  // 0 - default, 1 - sort up, 2 - sort down
 
 
@@ -125,7 +126,8 @@ function changeSortState(config, btn, columnIndex) {
     for (let i = 0; i < btnClasses.length; i++) {
         if (btnClasses[i].includes("fa-")) {
             btnClasses.remove(btnClasses[i]);
-            btnClasses.add(sortButtonsIcons[newState]);
+            (config.columns[columnIndex].type === "number") ?
+                btnClasses.add(sortButtonsIconsNumeric[newState]) : btnClasses.add(sortButtonsIcons[newState]);
             break;
         }
     }
