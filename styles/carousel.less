@@ -3,7 +3,7 @@
   border: 1px solid #CCC;
   overflow: hidden;
   margin: 0 auto;
- }
+}
 
 .carousel img {
   display: block;
@@ -30,7 +30,6 @@ li {
   right: 1%;
   .btn;
 }
-
 
 
 .btn {
@@ -80,10 +79,16 @@ li {
 }
 
 @media only screen and (max-width: 600px) {
+  body {
+    margin: 0;
+  }
+
   .carousel-control * {
     font-size: 70%;
   }
+
   .carousel {
     left: 0;
+    max-width: 95vw;
   }
 }

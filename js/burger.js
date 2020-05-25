@@ -1,41 +1,19 @@
-let burger = document.getElementsByClassName("burger")[0];
-let nav_menu = document.getElementById("nav-top-list");
-let close_btn = document.getElementsByClassName("close-btn")[0];
-let menu_items = document.getElementsByClassName("menu-item");
-burger.onclick = showMenu;
-close_btn.onclick = hideMenu;
-
-window.onresize = function () {
-    if (window.matchMedia("(min-width: 600px)").matches) {
-        nav_menu.hidden = false;
-        close_btn.hidden = true;
-    }
-};
-
-if (window.matchMedia("(max-width: 600px)").matches) {
-    nav_menu.hidden = false;
-}
+const burgerBtn = document.querySelector("#menu");
+let btnIcon = document.querySelector("#menu i");
+const menu = document.querySelector(".nav-menu");
+burgerBtn.onclick = showMenu;
 
 function showMenu() {
-    nav_menu.hidden = false;
-    nav_menu.style.display = "flex";
-    nav_menu.style.justifyContent = "center";
-    nav_menu.style.flexDirection = "column";
-    nav_menu.style.paddingLeft = 0;
-    burger.hidden = true;
-    burger.style.display = "none";
-    close_btn.hidden = false;
-    for (let i = 0; i < menu_items.length; i++) {
-        menu_items[i].style.width = "calc(100vw - 24px)";
-        menu_items[i].style.marginLeft = 0;
-        menu_items[i].style.marginRight = 0;
-        menu_items[i].style.textAlign = "center";
-    }
+    btnIcon.classList.remove("fa-bars");
+    btnIcon.classList.add("fa-times");
+    menu.classList.remove("hide");
+    burgerBtn.onclick = hideMenu;
 }
 
 function hideMenu() {
-    burger.style.display = "block";
-    close_btn.hidden = true;
-    nav_menu.hidden = true;
-    burger.hidden = false;
+    burgerBtn.classList.remove("hidden");
+    btnIcon.classList.remove("fa-times");
+    btnIcon.classList.add("fa-bars");
+    menu.classList.add("hide");
+    burgerBtn.onclick = showMenu;
 }

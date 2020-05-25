@@ -4,11 +4,12 @@ body {
 
 li {
   list-style-type: none;
-  }
+}
 
 a {
   color: white;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: none;
@@ -22,7 +23,7 @@ a {
   font-size: 1.5rem;
 }
 
-.navbar {
+.mynavbar {
   position: absolute;
   background-color: #007bff !important;
   padding: 10px;
@@ -37,73 +38,85 @@ a {
   color: white;
 }
 
-.close-btn {
-  justify-content: flex-end;
+.nav-menu {
+  display: inline-block;
+  padding-right: 10px;
 }
 
-.nav-menu {
-  display: none;
-}
 
 .menu-item {
+  margin: auto auto;
+  text-align: center;
   padding-right: 1vw;
   padding-left: 1vw;
   text-decoration: none;
 }
 
 .burger {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  margin-left: 1vw;
-  margin-top: 1vh;
+  display: none;
+  cursor: pointer;
+  color: white;
 }
 
-.mfa {
+
+.fas {
   margin-left: 2vw;
   margin-bottom: 1vh;
   vertical-align: bottom;
 }
 
-button {
+.mynavbar button {
   color: white;
   background: transparent;
   border: none;
 }
 
-[hidden] {
-  display: none !important;
+.mynavbar button,
+button:active,
+button:focus {
+  outline: none;
 }
 
-
-@media only screen and (min-width: 600px) {
-  .menu-name,
-  .burger {
-    display: none;
-    color: white;
-  }
-
-  .navbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: calc(100vw - 20px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: Helvetica, sans-serif;
-  }
-
-  .nav-menu {
-    display: flex;
-  }
-}
 
 @media only screen and (max-width: 600px) {
+  .hide {
+    display: none !important;
+  }
+
   .nav-menu {
-    margin-top: 0;
-    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    margin: auto auto;
+    padding-left: 0;
+  }
+
+  .burger {
+    display: inline;
+    margin-left: 1vw;
+    margin-top: 1vh;
+  }
+
+  .mylogo {
+    margin: auto auto;
+    padding-left: 40px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .menu-item {
+    padding-left: 20px;
   }
 }
 
+@media only screen and (max-width: 300px) {
+  .mylogo {
+    padding-left: 20px;
+  }
 
+  .menu-item {
+    padding-left: 10px;
+  }
+}
