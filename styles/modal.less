@@ -12,8 +12,8 @@ button {
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 .modal-header {
@@ -59,14 +59,21 @@ button {
 
 .bottom-close-btn {
   position: absolute;
-    left:30%;
-    margin-top: 0;
-    max-width: 25%;
+  left: 30%;
+  margin-top: 0;
+  max-width: 25%;
+}
+
+.bottom-close-btn-last {
+  position: absolute;
+  left: 45%;
+  margin-top: 0;
+  max-width: 25%;
 }
 
 .show-another-btn {
   position: absolute;
-  left:50%;
+  left: 50%;
   margin-top: 0;
 }
 
@@ -82,6 +89,7 @@ button {
   border: none;
   background: transparent;
   font-size: large;
+
   &:active,
   &:hover,
   &:focus {
@@ -93,12 +101,12 @@ button {
 }
 
 @media only screen and (max-width: 600px) {
-   .large {
-     font-size: 100%;
-   }
+  .large {
+    font-size: 100%;
+  }
 
   .bottom-close-btn {
-    left:5%;
+    left: 5%;
   }
 
   .top-close-btn {
@@ -106,7 +114,7 @@ button {
   }
 
   .show-another-btn {
-    left:35%;
+    left: 35%;
   }
 }
 

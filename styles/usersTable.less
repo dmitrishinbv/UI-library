@@ -1,13 +1,13 @@
 .users-table * {
   border-collapse: collapse;
   width: 50vw;
-  margin: 3vh auto;
+  margin: 1vh auto;
   color: black;
   padding: 0.5vw;
 }
 
 .users-table th, td {
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .users-table th {
@@ -15,7 +15,9 @@
   color: white;
 }
 
-.users-table tr:nth-child(even) {background-color: #f2f2f2;}
+.users-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
 .users-table .align-right {
   text-align: right;
@@ -25,3 +27,12 @@
   text-align: center;
 }
 
+th .fas {
+  color: white;
+  width: auto;
+  cursor: pointer;
+  &:active,
+  &:hover {
+    color: #75ff56;
+  }
+}
