@@ -18,16 +18,17 @@ function DataTable(config, data) {
     renderTable(table, data, config);
 }
 
+
 function addHeader(config) {
     const thead = document.createElement("thead");
     const tr = document.createElement("tr");
     thead.appendChild(tr);
 
-    for (let i = 0; i < config.columns.length; i++) {
-        (config.columns[i].type === "number") ?
-            createHtmlElement("th", tr, config.columns[i].title, null, "align-right") :
-            createHtmlElement("th", tr, config.columns[i].title, null, null);
-    }
+    config.columns.forEach(column => {
+        (column.type === "number") ?
+            createHtmlElement("th", tr, column.title, null, "align-right") :
+            createHtmlElement("th", tr, column.title, null, null);
+    });
 
     return thead;
 }
@@ -50,29 +51,31 @@ function renderTable(table, data, config) {
 function buildTableDataRows(config, dataRow, index) {
     const tr = document.createElement("tr");
 
-    for (let i = 0; i < config.columns.length; i++) {
-        if (config.columns[i].value === "_index") {
+    config.columns.forEach(function (column) {
+        let innerHtml = dataRow[column.value];
+
+        if (column.value === "_index") {
             createHtmlElement("td", tr, index, null, "align-center");
-            continue;
-        }
 
-        let innerHtml = dataRow[config.columns[i].value];
+        } else if (column.type === "number") {
+            createHtmlElement("td", tr, innerHtml, null, "align-right");
 
-        (config.columns[i].type === "number") ?
-            createHtmlElement("td", tr, innerHtml, null, "align-right") :
+        } else {
             createHtmlElement("td", tr, innerHtml, null, null);
-    }
+        }
+    });
 
     return tr;
 }
 
+
 function addSortBtns(config, table, sortData, data) {
     let columnSortStates = [];
 
-    for (let i = 0; i < config.columns.length; i++) {
+    config.columns.forEach(function (column, i) {
         const th = table.querySelectorAll("th");
         columnSortStates.push(0); // 0 - default sort state fo each table column
-        if (config.columns[i].sortable === true) {
+        if (column.sortable === true) {
             const btn = createHtmlElement("i", th[i], null, new Map([["id", i]]),
                 "fas " + sortButtonsIcons[0]);
 
@@ -80,11 +83,11 @@ function addSortBtns(config, table, sortData, data) {
                 columnSortStates[i] = changeSortState(config, btn, i, columnSortStates[i]);
 
                 if (columnSortStates[i] === 1) {
-                    sortData = sortColumn(config.columns[i], 1, sortData); // data in column will be sort up
+                    sortData = sortColumn(column, 1, sortData); // data in column will be sort up
                 }
 
                 if (columnSortStates[i] === 2) {
-                    sortData = sortColumn(config.columns[i], -1, sortData); // data in column will be sort down
+                    sortData = sortColumn(column, -1, sortData); // data in column will be sort down
                 }
 
                 if (columnSortStates[i] === 0 && (!columnSortStates.includes(1) || !columnSortStates.includes(2))) {
@@ -94,7 +97,7 @@ function addSortBtns(config, table, sortData, data) {
                 rebuildTable(table, sortData, config);
             };
         }
-    }
+    });
 
     return columnSortStates;
 }
@@ -128,14 +131,14 @@ function changeSortState(config, btn, columnIndex, prevState) {
     let newState = (prevState === 0 || prevState === 1) ? ++prevState : 0;
 
     // changes current sort-buttons classes for display the correct icon
-    for (let i = 0; i < btnClasses.length; i++) {
-        if (btnClasses[i].includes("fa-")) {
-            btnClasses.remove(btnClasses[i]);
+    btnClasses.forEach(btnClass => {
+        if (btnClass.includes("fa-")) {
+            btnClasses.remove(btnClass);
             (config.columns[columnIndex].type === "number") ?
                 btnClasses.add(sortButtonsIconsNumeric[newState]) : btnClasses.add(sortButtonsIcons[newState]);
-            break;
         }
-    }
+    });
+
     actualizeBtnStatuses(config, columnIndex);
 
     return newState;
@@ -175,6 +178,7 @@ function addSearchFiled(config, data) {
 
 function initSearch(table, config, data, query) {
     let searchResult;
+
     // check config columns for "search" and "fields"
     if (Object.keys(config).includes("search") && Object.keys(config.search).includes("fields")
         && config.search.fields.length > 0) {
@@ -227,6 +231,8 @@ function toKeyboardLayout(str) {
     });
 }
 
+
+// week #4 config file
 const config1 = {
     parent: '#usersTable',
     columns: [
@@ -265,4 +271,5 @@ const users = [
     {id: 30053, name: 'Вадик', surname: 'Боцман', age: 11},
 ];
 
+// week #4
 DataTable(config1, users);

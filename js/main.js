@@ -1,12 +1,13 @@
-export function createHtmlElement(tagName, parent = null, innerText = null, tagArrAttr = null, tagClass = null) {
+export function createHtmlElement(tagName, parent = null, innerText = null, tagMapAttr = null, tagClass = null) {
     let newTag = document.createElement(tagName);
+
     if (innerText !== null) {
         let text = document.createTextNode(innerText);
         newTag.appendChild(text);
     }
 
-    if (tagArrAttr !== null) {
-        tagArrAttr.forEach((value, key, map) => {
+    if (tagMapAttr !== null) {
+        tagMapAttr.forEach((value, key, map) => {
             newTag.setAttribute(`${key}`, `${value}`);
         });
     }
