@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
     <style>
-        h2 {
+        h2, h3 {
             text-align: center;
             color: #525c6a;
             margin-top: 2vh;
@@ -105,6 +105,22 @@
     <div class="modal-footer"></div>
 </div>
 
+<div class="modal add-user" id="send3">
+    <div id="notifications"></div>
+    <div class="modal-header centered"></div>
+    <div class="modal-content"></div>
+    <div class="modal-footer add-user-modal-footer">
+        <div class="mybtn-row-group add-user-btns">
+            <button class="mybtn-success modal-send-btn" type="submit">
+                OK
+            </button>
+            <button class="mybtn-danger" id="modalCancelBtn">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
 <h2>Carousel</h2>
 <div class="carousel-control">
     <label class="label-carousel-control">Показывать картинок в окне карусели:</label>
@@ -124,6 +140,7 @@
         location.reload();
     }
 </script>
+
 <script src="js/burger.js"></script>
 <script src="js/modal.js" type="module"></script>
 <script src="js/carousel.js"></script>
