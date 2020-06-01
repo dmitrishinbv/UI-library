@@ -2,10 +2,9 @@ import {createHtmlElement} from "./main.js";
 
 const sortButtonsIcons = ["fa-sort", "fa-sort-alpha-up", "fa-sort-alpha-down"];
 const sortButtonsIconsNumeric = ["fa-sort", "fa-sort-numeric-up-alt", "fa-sort-numeric-down-alt"];
-const SIZE_INPUT_TEXT = 30; // visible size for form input with type text
-const SIZE_INPUT_URL = 60; // visible size for form input with type url
+const SIZE_INPUT_TEXT = 40; // visible size for form input with type text
+const SIZE_INPUT_URL = 70; // visible size for form input with type url
 const USER_MODAL_WINDOW_ID = "#send3";
-const ADD_USER_FORM = "#addUserForm";
 let findData = []; //accumulates data search results from user query
 let columnSortStates = []; //accumulates sort states (default - 0, sort up - 1, sort down - 2) for each table column
 
@@ -343,7 +342,6 @@ async function deleteUser(id, config) {
 
 
 function prepareModalWindow(config) {
-
     const modalHeader = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header");
 
     while (modalHeader.firstChild) {
@@ -392,12 +390,14 @@ function createOpenFormBtn(config) {
 
 
 function addForm(config) {
-    const formContainer = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content");
-    const form = createHtmlElement("form", formContainer, null,
-        new Map([["id", ADD_USER_FORM],
+    const modalContainer = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content");
+    modalContainer.classList.add("container");
+    const form = createHtmlElement("form", modalContainer, null,
+        new Map([["id", "userForm"],
             ["method", "post"],
             ["enctype", "multipart/form-data"]]), null);
-    const div = createHtmlElement("div", form, null, null, "row");
+
+    let hasImg = false;
 
     config.columns.forEach((column) => {
         let type = "text";
@@ -415,6 +415,7 @@ function addForm(config) {
             }
 
             if (column.type === 'url-jpg') {
+                hasImg = true;
                 type = "url";
                 placeholder = "введите url адрес изображения для аватарки";
                 required = [];
@@ -422,10 +423,10 @@ function addForm(config) {
             }
 
             if (label) {
-                createHtmlElement("label", div, column.title, null, null);
+                createHtmlElement("label", form, column.title, null, null);
             }
 
-            createHtmlElement("input", div, null,
+            createHtmlElement("input", form, null,
                 new Map([["id", column.value],
                     ["name", column.value],
                     ["placeholder", placeholder],
@@ -435,16 +436,32 @@ function addForm(config) {
         }
     });
 
-    createHtmlElement("button", div, "Ввести всё заново",
+    if (hasImg) {
+        const imgContainer = createHtmlElement("div", form, null,
+            null, "form-img-container");
+        createHtmlElement("img", imgContainer, null,
+            new Map([["src", ""]]), "user-img");
+    }
+
+    createHtmlElement("button", form, "Ввести всё заново",
         new Map([["type", "reset"], ["form", form.id]]), "mybtn-secondary border-round-5");
 
-    addFormActions(config);
+    addFormActions(config, hasImg);
 
     return form;
 }
 
 
-function addFormActions(config) {
+function addFormActions(config, hasImg) {
+    if (hasImg) {
+        const imgInput = document.querySelector(USER_MODAL_WINDOW_ID + " [type=url]");
+
+        imgInput.onchange = () => {
+            const img = document.querySelector(USER_MODAL_WINDOW_ID + " .form-img-container img");
+            img.setAttribute("src", imgInput.value);
+        };
+    }
+
     const cancelBtn = document.querySelector("#modalCancelBtn");
 
     cancelBtn.onclick = () => {
@@ -482,6 +499,7 @@ function clearNotifications() {
     }
 }
 
+
 function editUser(dataRow, config) {
     document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header h3").innerHTML
         = "Редактировать пользователя (id " + dataRow.id + ")";
@@ -499,6 +517,10 @@ function editUser(dataRow, config) {
         if (el.type === "date") {
             currentVal = new Date(dataRow[el.id]).toISOString().slice(0, 10);
         }
+        if (el.type === "url") {
+            form.querySelector(".user-img").setAttribute("src", currentVal);
+        }
+
         el.setAttribute("value", currentVal);
     });
 
@@ -548,7 +570,7 @@ async function sendFormData(form, config, url, method) {
     let changedData = await getDataFromApi(config.apiURL, "GET");
     const table = document.querySelector(config.parent + " table");
     rebuildTable(table, changedData, config);
-    setTimeout (clearNotifications, 1000);
+    setTimeout(clearNotifications, 1000);
 }
 
 
@@ -560,6 +582,7 @@ function displayNotification(messageClass) {
     msgContainer.classList.add(messageClass);
 
 }
+
 
 function removeForm() {
     const form = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content form");
