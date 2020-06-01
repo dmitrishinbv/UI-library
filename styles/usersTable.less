@@ -119,3 +119,38 @@ input:focus {
   margin: auto;
   text-align: center;
 }
+
+.container, .form-img-container {
+  display: flex;
+}
+
+.container form {
+  margin-top: 10px;
+}
+
+.container form input {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.form-img-container img {
+  height: 50%;
+  margin-top: -15%;
+  margin-left: 70%;
+}
+
+@media only screen and (max-width: 800px) {
+  h2, h3, h4 {
+    font-size: smaller;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  h2, h3, h4 {
+    font-size: small;
+  }
+
+  .form-img-container img {
+    margin-top: -5%;
+  }
+}
