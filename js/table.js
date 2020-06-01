@@ -5,6 +5,7 @@ const sortButtonsIconsNumeric = ["fa-sort", "fa-sort-numeric-up-alt", "fa-sort-n
 const SIZE_INPUT_TEXT = 30; // visible size for form input with type text
 const SIZE_INPUT_URL = 60; // visible size for form input with type url
 const USER_MODAL_WINDOW_ID = "#send3";
+const ADD_USER_FORM = "#addUserForm";
 let findData = []; //accumulates data search results from user query
 let columnSortStates = []; //accumulates sort states (default - 0, sort up - 1, sort down - 2) for each table column
 
@@ -141,13 +142,13 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
                 null, "mybtn-danger");
 
             delBtn.onclick = () => {
-                deleteUser(dataRow.id, config);
+                if (confirm("Удалить?")) deleteUser(dataRow.id, config);
             };
             const editBtn = createHtmlElement("button", div, "Редактировать",
                 null, "mybtn-warning");
 
             editBtn.onclick = () => {
-                editUser(dataRow.id, config);
+                editUser(dataRow, config);
             };
             break;
 
@@ -164,7 +165,6 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
 
 
 function addSortBtns(config, table, data) {
-
     config.columns.forEach(function (column, i) {
         const th = table.querySelectorAll("th");
         columnSortStates.push(0); // 0 - default sort state fo each table column
@@ -322,14 +322,16 @@ function searchData(config, fields, data, query) {
 }
 
 
-async function deleteUser(index, config) {
+async function deleteUser(id, config) {
     let data;
+
     if (config.apiURL) {
-        data = await getDataFromApi(config.apiURL + "/" + index, "DELETE");
+        data = await getDataFromApi(config.apiURL + "/" + id, "DELETE");
 
         if (data.length) {
             throw new Error("Not found");
         }
+
     } else {
         throw new Error("Ошибка. Сonfig не содержит apiURL для отправки запроса");
     }
@@ -341,33 +343,61 @@ async function deleteUser(index, config) {
 
 
 function prepareModalWindow(config) {
-    const tableContainer = document.querySelector(config.parent);
+
     const modalHeader = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header");
+
+    while (modalHeader.firstChild) {
+        modalHeader.removeChild(modalHeader.firstChild);
+    }
+
     const h3 = createHtmlElement("h3", modalHeader, "Добавить пользователя на ");
     createHtmlElement("a", h3, config.apiURL,
         new Map([["href", config.apiURL], ["target", "_blanc"]]));
 
-    const btn = createHtmlElement("button", tableContainer, "Добавить",
-        null, "mybtn-primary border-round-5 add-btn");
+    const modalFooter = document.querySelector(USER_MODAL_WINDOW_ID + " .add-user-modal-footer");
 
-    addFormElements(btn, config);
+    while (modalFooter.firstChild) {
+        modalFooter.removeChild(modalFooter.firstChild);
+    }
+
+    const btnRowContainer = createHtmlElement("div", modalFooter, null,
+        null, "mybtn-row-group add-user-btns");
+
+    createHtmlElement("button", btnRowContainer, "Отправить",
+        new Map([["type", "submit"]]), "mybtn-success modal-send-btn");
+
+    createHtmlElement("button", btnRowContainer, "Cancel",
+        new Map([["id", "modalCancelBtn"]]), "mybtn-danger");
+
+    createOpenFormBtn(config);
 }
 
 
-function editUser(index, config) {
-    alert(index)
+function createOpenFormBtn(config) {
+    const tableContainer = document.querySelector(config.parent);
+    let openFormBtn = document.querySelector("#openForm");
+
+    if (openFormBtn === null) {
+        openFormBtn = createHtmlElement("button", tableContainer, "Добавить",
+            new Map([["id", "openForm"]]), "mybtn-primary border-round-5 add-btn");
+    }
+
+    openFormBtn.onclick = () => {
+        removeForm();
+        prepareModalWindow(config);
+        addForm(config);
+        showModal();
+    };
 }
 
 
-function addFormElements(btn, config) {
-
+function addForm(config) {
     const formContainer = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content");
     const form = createHtmlElement("form", formContainer, null,
-        new Map([["id", "addUserForm"],
+        new Map([["id", ADD_USER_FORM],
             ["method", "post"],
             ["enctype", "multipart/form-data"]]), null);
     const div = createHtmlElement("div", form, null, null, "row");
-
 
     config.columns.forEach((column) => {
         let type = "text";
@@ -408,21 +438,13 @@ function addFormElements(btn, config) {
     createHtmlElement("button", div, "Ввести всё заново",
         new Map([["type", "reset"], ["form", form.id]]), "mybtn-secondary border-round-5");
 
-    addFormActions(btn, config);
+    addFormActions(config);
+
+    return form;
 }
 
 
-function addFormActions(btn, config) {
-    btn.onclick = () => {
-        const container = document.querySelector('#notifications');
-        while (container.firstChild) {
-            container.removeChild(container.firstChild);
-        }
-        document.querySelector(USER_MODAL_WINDOW_ID).classList.remove("modal-hidden");
-        document.querySelector(USER_MODAL_WINDOW_ID).classList.add("modal-active");
-        document.querySelector(USER_MODAL_WINDOW_ID + " form input").focus();
-    };
-
+function addFormActions(config) {
     const cancelBtn = document.querySelector("#modalCancelBtn");
 
     cancelBtn.onclick = () => {
@@ -435,7 +457,7 @@ function addFormActions(btn, config) {
     sendBtn.onclick = () => {
         if (document.forms[0].reportValidity()) {
             displayNotification('notification-success');
-            sendData(document.forms[0], config);
+            sendFormData(document.forms[0], config, config.apiURL, "POST");
 
         } else {
             displayNotification('notification-error');
@@ -444,7 +466,58 @@ function addFormActions(btn, config) {
 }
 
 
-async function sendData(form, config) {
+function showModal() {
+    clearNotifications();
+    document.querySelector(USER_MODAL_WINDOW_ID).classList.remove("modal-hidden");
+    document.querySelector(USER_MODAL_WINDOW_ID).classList.add("modal-active");
+    document.querySelector(USER_MODAL_WINDOW_ID + " form input").focus();
+}
+
+
+function clearNotifications() {
+    const container = document.querySelector('#notifications');
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+function editUser(dataRow, config) {
+    document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header h3").innerHTML
+        = "Редактировать пользователя (id " + dataRow.id + ")";
+    const sendBtn = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-send-btn");
+    sendBtn.innerHTML = "Сохранить";
+
+    removeForm();
+    const form = addForm(config);
+    document.querySelector(USER_MODAL_WINDOW_ID + " [type=reset]").innerHTML = "Вернуть как было";
+
+    const inputElements = form.querySelectorAll("input");
+    inputElements.forEach(el => {
+
+        let currentVal = dataRow[el.id];
+        if (el.type === "date") {
+            currentVal = new Date(dataRow[el.id]).toISOString().slice(0, 10);
+        }
+        el.setAttribute("value", currentVal);
+    });
+
+    showModal();
+
+    const url = config.apiURL + "/" + dataRow.id;
+    sendBtn.onclick = () => {
+        if (form.reportValidity()) {
+            displayNotification('notification-success');
+            sendFormData(form, config, url, "PUT");
+
+        } else {
+            displayNotification('notification-error');
+        }
+    }
+}
+
+
+async function sendFormData(form, config, url, method) {
     let data = {};
 
     config.columns.forEach((column) => {
@@ -458,8 +531,8 @@ async function sendData(form, config) {
     });
 
     try {
-        await fetch(config.apiURL, {
-            method: "POST",
+        await fetch(url, {
+            method: method,
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
@@ -475,14 +548,39 @@ async function sendData(form, config) {
     let changedData = await getDataFromApi(config.apiURL, "GET");
     const table = document.querySelector(config.parent + " table");
     rebuildTable(table, changedData, config);
+    setTimeout (clearNotifications, 1000);
 }
 
-function displayNotification(messageClass) {
-    let msgCont;
-    document.querySelector("#notifications").appendChild(
-        msgCont = document.createElement('div'));
 
-    msgCont.classList.add(messageClass);
+function displayNotification(messageClass) {
+    let msgContainer;
+    document.querySelector("#notifications").appendChild(
+        msgContainer = document.createElement('div'));
+
+    msgContainer.classList.add(messageClass);
+
+}
+
+function removeForm() {
+    const form = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content form");
+
+    if (form) {
+        while (form.firstChild) {
+            form.removeChild(form.firstChild);
+        }
+        form.remove();
+    }
+}
+
+
+function calculateAge(birthday) {
+    const currentDate = new Date();
+    const birthdayYear = new Date(birthday).getFullYear();
+    const birthdayMonth = new Date(birthday).getMonth();
+    const birthdayDay = new Date(birthday).getDate();
+    let age = currentDate.getFullYear() - birthdayYear + (currentDate.getMonth() - birthdayMonth) / 12 +
+        (currentDate.getDate() - birthdayDay) / 365;
+    return Math.round(age * 100) / 100;
 }
 
 
@@ -497,17 +595,6 @@ function toKeyboardLayout(str) {
     return str.replace(/[A-z/,.;\]\[]/g, function (x) {
         return x == x.toLowerCase() ? associativeArray[x] : associativeArray[x.toLowerCase()].toUpperCase();
     });
-}
-
-
-function calculateAge(birthday) {
-    const currentDate = new Date();
-    const birthdayYear = new Date(birthday).getFullYear();
-    const birthdayMonth = new Date(birthday).getMonth();
-    const birthdayDay = new Date(birthday).getDate();
-    let age = currentDate.getFullYear() - birthdayYear + (currentDate.getMonth() - birthdayMonth) / 12 +
-        (currentDate.getDate() - birthdayDay) / 365;
-    return Math.round(age * 100) / 100;
 }
 
 
@@ -552,4 +639,3 @@ const config0 = {
 
 // week #4
 //DataTable(config1, users);
-
