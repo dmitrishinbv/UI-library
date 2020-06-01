@@ -3,7 +3,7 @@
   width: 60vw;
   color: black;
   margin: 1vh auto;
-  padding: 0.5vh  0.5vw;
+  padding: 0.5vh 0.5vw;
 }
 
 .users-table th, td {
@@ -35,6 +35,7 @@ th .fas {
   color: white;
   width: auto;
   cursor: pointer;
+
   &:active,
   &:hover {
     color: #75ff56;
@@ -46,5 +47,75 @@ th .fas {
   height: auto;
   margin: 0;
   padding: 0;
-  border:0
+  border: 0
+}
+
+[class ^= "mybtn"] {
+  width: auto;
+  margin: 0;
+}
+
+.mybtn-danger {
+  color: white;
+}
+
+.add-btn {
+  color: white;
+  display: block;
+  margin-left: 10vw;
+  padding: 0.5vh 1.5vw;
+}
+
+.add-user-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  margin-bottom: 2vh;
+}
+
+input:focus {
+  border: 1px solid #555;
+}
+
+.modal input {
+  margin: 1vh 1vw;
+}
+
+[class^=notification-success] {
+  background-color: rgba(0, 255, 0, .8);
+  z-index: 2;
+}
+
+[class^=notification-error] {
+  background-color: rgba(255, 0, 0, .8);
+  z-index: 2;
+}
+
+.notification-success:before {
+  content: 'Отправляю данные на сервер...';
+}
+
+.notification-success-res:before {
+  content: 'Успешно!';
+}
+
+.notification-error:before {
+  content: 'Исправьте все ошибки в форме и попробуйте ещё раз';
+}
+
+.notification-error-res:before {
+  content: 'Ошибка! Не удалось записать данные на сервер';
+}
+
+[class^=notification] {
+  position: relative;
+  top: 10px;
+  left: 0;
+  right: 0;
+  max-width: 600px;
+  padding: 5px;
+  margin: auto;
+  text-align: center;
 }
