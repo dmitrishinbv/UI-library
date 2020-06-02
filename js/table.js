@@ -588,9 +588,9 @@ function removeForm() {
     const form = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content form");
 
     if (form) {
-        while (form.firstChild) {
-            form.removeChild(form.firstChild);
-        }
+        // while (form.firstChild) {
+        //     form.removeChild(form.firstChild);
+        // }
         form.remove();
     }
 }
