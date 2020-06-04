@@ -7,7 +7,8 @@ const SIZE_INPUT_URL = 70; // visible size for form input with type url
 const USER_MODAL_WINDOW_ID = "#send3";
 let findData = []; //accumulates data search results from user query
 let columnSortStates = []; //accumulates sort states (default - 0, sort up - 1, sort down - 2) for each table column
-
+let userData = []; // accumulates update data from api
+let localMode = false;
 
 // week #5 config file
 const config1 = {
@@ -32,25 +33,63 @@ const config1 = {
     apiURL: "https://5e938231c7393c0016de48e6.mockapi.io/api/ps5/student"
 };
 
+
+const data = [
+    {
+        "id": "1", "createdAt": "2020-05-31T19:24:58.692Z", "name": "Mariano",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/diesellaws/128.jpg", "surname": "Crona",
+        "birthday": "2020-03-11"
+    },
+    {
+        "id": "4", "createdAt": "2020-05-26T14:12:38.295Z", "name": "Branson",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/justinrob/128.jpg", "surname": "Harber",
+        "birthday": "2019-07-20T09:03:51.257Z"
+    },
+    {
+        "id": "11", "createdAt": "2020-05-26T11:06:17.542Z", "name": "Robert",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/sreejithexp/128.jpg", "surname": "Kuhlman",
+        "birthday": "2019-09-09T12:57:35.976Z"
+    },
+    {
+        "id": "12", "createdAt": "2020-05-26T14:56:30.258Z", "name": "Carmen",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/toddrew/128.jpg", "surname": "Hirthe",
+        "birthday": "2019-07-28T05:04:03.988Z"
+    },
+    {
+        "id": "15", "createdAt": "2020-05-26T14:56:30.258Z", "name": "Carmen",
+        "avatar": "", "surname": "Hirthe",
+        "birthday": "2019-07-28T05:04:03.988Z"
+    }
+];
+
 // week #5
+//DataTable(config1, data); // used for local mode
 DataTable(config1);
 
-
 async function DataTable(config, data) {
-    if (!data && config.apiURL) {
-        prepareModalWindow(config);
-        data = await getDataFromApi(config.apiURL, "GET");
+    prepareModalWindow(config);
+    let buildData;
+
+    if (data) {
+        userData = buildData = data;
+        localMode = true;
+
+    } else if (!data && config.apiURL && !userData.length) {
+        buildData = await getDataFromApi(config.apiURL, "GET");
+
+    } else {
+        buildData = userData;
     }
 
     if (config.search) {
-        addSearchFiled(config, data);
+        addSearchFiled(config, buildData);
     }
 
     const table = document.createElement("table");
     document.querySelector(config.parent).appendChild(table);
     table.appendChild(addHeader(config)); // add column names to the table head
-    addSortBtns(config, table, data); // add sort buttons to the table head
-    renderTable(table, data, config);
+    addSortBtns(config, table, buildData); // add sort buttons to the table head
+    renderTable(table, buildData, config);
 }
 
 async function getDataFromApi(url, method) {
@@ -61,6 +100,53 @@ async function getDataFromApi(url, method) {
     } catch (error) {
         throw new Error("Не удалось получить данные от сервера");
     }
+}
+
+
+async function sendFormData(form, config, url, method, id) {
+    let data = {};
+
+    config.columns.forEach((column) => {
+        if (column.editable !== false) {
+            data[column.value] = form.querySelector("#" + column.value).value;
+        }
+
+        if (column.value === "createdAt") {
+            data[column.value] = new Date().toISOString();
+        }
+    });
+
+    if (localMode && method.toLowerCase() === "post") {
+        let id = Math.max(...userData.map(item => item.id));
+        data.id = ++id;
+        userData.push(data);
+
+    } else if (localMode && method.toLowerCase() === "put") {
+        Object.assign(userData.find(item => item.id === id), data);
+
+    } else {
+        try {
+            await fetch(url, {
+                method: method,
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            displayNotification('notification-success-res');
+
+        } catch (error) {
+            console.error(error);
+            displayNotification('notification-error-res');
+        }
+
+        userData = await getDataFromApi(config.apiURL, "GET");
+    }
+
+    const table = document.querySelector(config.parent + " table");
+    let searchQuery = document.querySelector("#searchQuery").value;
+    (searchQuery !== "") ? initSearch(table, config, userData, searchQuery) : rebuildTable(table, userData, config);
+    setTimeout(clearNotifications, 1000);
 }
 
 
@@ -106,11 +192,9 @@ function buildTableDataRows(config, dataRow, index) {
 
 function createElementByColumnType(tr, column, dataRow, index, config) {
     let innerHtml = dataRow[column.value];
-    let date = new Date(innerHtml);
-    const options = {year: 'numeric', month: 'long', day: 'numeric'};
-    date = date.toLocaleDateString('ru-RU', options);
     let td;
     let element;
+    let date;
 
     switch (column.type) {
         case "counter" :
@@ -124,6 +208,9 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
             break;
 
         case "datetime-local" :
+            date = new Date(innerHtml);
+            const options = {year: 'numeric', month: 'long', day: 'numeric'};
+            date = date.toLocaleDateString('ru-RU', options);
             element = createHtmlElement("td", tr, date, null, "align-right");
             break;
 
@@ -141,13 +228,14 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
                 null, "mybtn-danger");
 
             delBtn.onclick = () => {
-                if (confirm("Удалить?")) deleteUser(dataRow.id, config);
+                if (confirm("Удалить?")) deleteUser(config, dataRow.id);
+                console.log(userData);
             };
             const editBtn = createHtmlElement("button", div, "Редактировать",
                 null, "mybtn-warning");
 
             editBtn.onclick = () => {
-                editUser(dataRow, config);
+                editUser(config, dataRow);
             };
             break;
 
@@ -215,7 +303,11 @@ function sortColumn(columnData, coef, sortData) {
 }
 
 
-function rebuildTable(table, sortData, config) {
+function rebuildTable(table, newData, config, clearFindData) {
+    if (clearFindData) {
+        findData = [];
+    }
+
     table.querySelector(" tbody").remove();
     let sortedColumn = [];
 
@@ -225,10 +317,10 @@ function rebuildTable(table, sortData, config) {
 
     if (sortedColumn.length) {
         const sortCoef = (sortedColumn[1] === 1) ? 1 : -1;
-        sortColumn(config.columns[sortedColumn[0]], sortCoef, sortData);
+        newData = sortColumn(config.columns[sortedColumn[0]], sortCoef, newData);
     }
 
-    renderTable(table, sortData, config);
+    renderTable(table, newData, config);
 }
 
 
@@ -277,16 +369,15 @@ function addSearchFiled(config, data) {
     const searchContainer = createHtmlElement("div", tableContainer, null,
         null, "table-search");
     const searchInput = createHtmlElement("input", searchContainer, null,
-        new Map([["type", "text"], ["placeholder", "search"]]), null);
-    let searchResult = [];
+        new Map([["id", "searchQuery"], ["type", "text"], ["placeholder", "search"]]), null);
     searchInput.focus();
 
     searchInput.oninput = () => {
         const table = document.querySelector(config.parent + " table");
 
         (searchInput.value !== "")
-            ? searchResult = initSearch(table, config, data, searchInput.value)
-            : rebuildTable(table, data, config);
+            ? initSearch(table, config, data, searchInput.value)
+            : rebuildTable(table, data, config, true);
     };
 }
 
@@ -321,7 +412,7 @@ function searchData(config, fields, data, query) {
 }
 
 
-async function deleteUser(id, config) {
+async function deleteUser(config, id) {
     let data;
 
     if (config.apiURL) {
@@ -331,13 +422,16 @@ async function deleteUser(id, config) {
             throw new Error("Not found");
         }
 
+        userData = await getDataFromApi(config.apiURL, "GET");
+    } else if (localMode) {
+        userData = userData.filter(dataRow => dataRow.id !== id);
     } else {
         throw new Error("Ошибка. Сonfig не содержит apiURL для отправки запроса");
     }
 
-    let changedData = await getDataFromApi(config.apiURL, "GET");
     const table = document.querySelector(config.parent + " table");
-    rebuildTable(table, changedData, config);
+    let searchQuery = document.querySelector("#searchQuery").value;
+    (searchQuery !== "") ? initSearch(table, config, userData, searchQuery) : rebuildTable(table, userData, config);
 }
 
 
@@ -409,7 +503,6 @@ function addForm(config) {
         if (column.editable !== false) {
             if (column.type === 'datetime-local') {
                 type = "date";
-                required = [];
                 size = "";
                 label = true;
             }
@@ -475,6 +568,9 @@ function addFormActions(config, hasImg) {
         if (document.forms[0].reportValidity()) {
             displayNotification('notification-success');
             sendFormData(document.forms[0], config, config.apiURL, "POST");
+            document.forms[0].querySelector(".user-img").setAttribute("src", "");
+            document.forms[0].reset();
+            document.forms[0].firstChild.focus();
 
         } else {
             displayNotification('notification-error');
@@ -500,7 +596,7 @@ function clearNotifications() {
 }
 
 
-function editUser(dataRow, config) {
+function editUser(config, dataRow) {
     document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header h3").innerHTML
         = "Редактировать пользователя (id " + dataRow.id + ")";
     const sendBtn = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-send-btn");
@@ -530,47 +626,12 @@ function editUser(dataRow, config) {
     sendBtn.onclick = () => {
         if (form.reportValidity()) {
             displayNotification('notification-success');
-            sendFormData(form, config, url, "PUT");
+            sendFormData(form, config, url, "PUT", dataRow.id);
 
         } else {
             displayNotification('notification-error');
         }
     }
-}
-
-
-async function sendFormData(form, config, url, method) {
-    let data = {};
-
-    config.columns.forEach((column) => {
-        if (column.editable !== false) {
-            data[column.value] = form.querySelector("#" + column.value).value;
-        }
-
-        if (column.value === "createdAt") {
-            data[column.value] = new Date().toISOString();
-        }
-    });
-
-    try {
-        await fetch(url, {
-            method: method,
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        displayNotification('notification-success-res');
-
-    } catch (error) {
-        console.error(error);
-        displayNotification('notification-error-res');
-    }
-
-    let changedData = await getDataFromApi(config.apiURL, "GET");
-    const table = document.querySelector(config.parent + " table");
-    rebuildTable(table, changedData, config);
-    setTimeout(clearNotifications, 1000);
 }
 
 
@@ -588,9 +649,9 @@ function removeForm() {
     const form = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content form");
 
     if (form) {
-        // while (form.firstChild) {
-        //     form.removeChild(form.firstChild);
-        // }
+        while (form.firstChild) {
+            form.removeChild(form.firstChild);
+        }
         form.remove();
     }
 }
