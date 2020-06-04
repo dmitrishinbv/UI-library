@@ -316,7 +316,7 @@ function rebuildTable(table, newData, config, clearFindData) {
         userData = newData;
     }
 
-    if (document.querySelector("#searchQuery").value === "") {
+    if (document.querySelector("#searchQuery").value === "" && userData.length) {
         newData = userData;
     }
 
