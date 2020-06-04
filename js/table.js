@@ -7,8 +7,8 @@ const SIZE_INPUT_URL = 70; // visible size for form input with type url
 const USER_MODAL_WINDOW_ID = "#send3";
 let findData = []; //accumulates data search results from user query
 let columnSortStates = []; //accumulates sort states (default - 0, sort up - 1, sort down - 2) for each table column
-let userData = []; // accumulates update data from api
-let localMode = false;
+let userData = []; // accumulates update data from server api or local resource
+let localMode = false; // works only with local data
 
 // week #5 config file
 const config1 = {
@@ -145,7 +145,11 @@ async function sendFormData(form, config, url, method, id) {
 
     const table = document.querySelector(config.parent + " table");
     let searchQuery = document.querySelector("#searchQuery").value;
-    (searchQuery !== "") ? initSearch(table, config, userData, searchQuery) : rebuildTable(table, userData, config);
+
+    (searchQuery !== "")
+        ? initSearch(table, config, userData, searchQuery)
+        : rebuildTable(table, userData, config, true);
+
     setTimeout(clearNotifications, 1000);
 }
 
@@ -228,9 +232,11 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
                 null, "mybtn-danger");
 
             delBtn.onclick = () => {
-                if (confirm("Удалить?")) deleteUser(config, dataRow.id);
-                console.log(userData);
+                if (confirm("Удалить?")) {
+                    deleteUser(config, dataRow.id);
+                }
             };
+
             const editBtn = createHtmlElement("button", div, "Редактировать",
                 null, "mybtn-warning");
 
@@ -252,6 +258,7 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
 
 
 function addSortBtns(config, table, data) {
+
     config.columns.forEach(function (column, i) {
         const th = table.querySelectorAll("th");
         columnSortStates.push(0); // 0 - default sort state fo each table column
@@ -306,6 +313,11 @@ function sortColumn(columnData, coef, sortData) {
 function rebuildTable(table, newData, config, clearFindData) {
     if (clearFindData) {
         findData = [];
+        userData = newData;
+    }
+
+    if (document.querySelector("#searchQuery").value === "") {
+        newData = userData;
     }
 
     table.querySelector(" tbody").remove();
@@ -373,6 +385,7 @@ function addSearchFiled(config, data) {
     searchInput.focus();
 
     searchInput.oninput = () => {
+        data = (userData.length) ? userData : data;
         const table = document.querySelector(config.parent + " table");
 
         (searchInput.value !== "")
@@ -430,7 +443,7 @@ async function deleteUser(config, id) {
     }
 
     const table = document.querySelector(config.parent + " table");
-    let searchQuery = document.querySelector("#searchQuery").value;
+    const searchQuery = document.querySelector("#searchQuery").value;
     (searchQuery !== "") ? initSearch(table, config, userData, searchQuery) : rebuildTable(table, userData, config);
 }
 
