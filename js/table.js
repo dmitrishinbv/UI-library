@@ -1,10 +1,13 @@
 import {createHtmlElement} from "./main.js";
+import {showModalWindow} from "./modal.js";
+import {closeModalWindow} from "./modal.js";
 
 const sortButtonsIcons = ["fa-sort", "fa-sort-alpha-up", "fa-sort-alpha-down"];
 const sortButtonsIconsNumeric = ["fa-sort", "fa-sort-numeric-up-alt", "fa-sort-numeric-down-alt"];
 const SIZE_INPUT_TEXT = 40; // visible size for form input with type text
 const SIZE_INPUT_URL = 70; // visible size for form input with type url
 const USER_MODAL_WINDOW_ID = "#send3";
+const NOTIFICATION_TIMEOUT = 2000;
 let findData = []; //accumulates data search results from user query
 let columnSortStates = []; //accumulates sort states (default - 0, sort up - 1, sort down - 2) for each table column
 let userData = []; // accumulates update data from server api or local resource
@@ -21,7 +24,7 @@ const config1 = {
         {title: 'Аватар', value: 'avatar', type: 'url-jpg'},
         {title: 'Дата рождения', value: 'birthday', type: 'datetime-local', sortable: true},
         {title: 'Возраст', value: (user) => calculateAge(user.birthday), type: 'age', editable: false},
-        {title: 'Действия', value: 'actions', type: 'buttons', editable: false},
+        {title: 'Действия', type: 'actions', editable: false},
     ],
     search: {
         fields: ['name', 'surname'],
@@ -62,24 +65,27 @@ const data = [
     }
 ];
 
+const notification = {
+    "notification-success-form": "Отправляю данные на сервер...",
+    "notification-error-form": "Исправьте все ошибки в форме и попробуйте ещё раз",
+    "notification-success-request": "Успешно",
+    "notification-error-request": "Ошибка! Не удалось записать данные на сервер"
+};
+
 // week #5
 //DataTable(config1, data); // used for local mode
 DataTable(config1);
 
 async function DataTable(config, data) {
-    prepareModalWindow(config);
-    let buildData;
+    createOpenFormBtn(config);
 
     if (data) {
-        userData = buildData = data;
+        userData = data;
         localMode = true;
-
-    } else if (!data && config.apiURL && !userData.length) {
-        buildData = await getDataFromApi(config.apiURL, "GET");
-
-    } else {
-        buildData = userData;
     }
+
+    const buildData = await getData(config.apiURL);
+    userData = buildData.slice();
 
     if (config.search) {
         addSearchFiled(config, buildData);
@@ -89,68 +95,86 @@ async function DataTable(config, data) {
     document.querySelector(config.parent).appendChild(table);
     table.appendChild(addHeader(config)); // add column names to the table head
     addSortBtns(config, table, buildData); // add sort buttons to the table head
-    renderTable(table, buildData, config);
+    renderTable(config, buildData); // build table data rows
 }
 
-async function getDataFromApi(url, method) {
-    try {
-        let response = await fetch(url, {method: method});
-        return await response.json();
+async function getData(url) {
+    if (localMode) {
+        return userData;
 
-    } catch (error) {
-        throw new Error("Не удалось получить данные от сервера");
+    } else if (url) {
+        try {
+            let response = await fetch(url, {method: "GET"});
+            if (response.status !== 200) {
+                alert("Ну удалось получить данные с сервера! Ошибка " + response.status);
+            }
+            return await response.json();
+
+        } catch (error) {
+            alert("Ну удалось получить данные с сервера " + error.message);
+        }
+
+    } else {
+        alert("Not found apiURL or local stored data");
     }
 }
 
 
-async function sendFormData(form, config, url, method, id) {
-    let data = {};
-
-    config.columns.forEach((column) => {
-        if (column.editable !== false) {
-            data[column.value] = form.querySelector("#" + column.value).value;
-        }
-
-        if (column.value === "createdAt") {
-            data[column.value] = new Date().toISOString();
-        }
-    });
-
-    if (localMode && method.toLowerCase() === "post") {
-        let id = Math.max(...userData.map(item => item.id));
-        data.id = ++id;
-        userData.push(data);
-
-    } else if (localMode && method.toLowerCase() === "put") {
-        Object.assign(userData.find(item => item.id === id), data);
+async function sendRequest(config, url, method, id, form) {
+    if (localMode) {
+        updateLocalData(method.toLowerCase());
 
     } else {
+        method = method.toLowerCase();
+        let json;
+        let headers;
+
+        if (method === "post" || method === "put") {
+            const formData = new FormData(form);
+            json = JSON.stringify(Object.fromEntries(formData));
+            headers = {
+                "Content-Type": "application/json"
+            };
+        }
+
         try {
-            await fetch(url, {
+            let response = await fetch(url, {
                 method: method,
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: json,
+                headers: headers
             });
-            displayNotification('notification-success-res');
+
+            response = await response.json();
+            (response)
+                ? displayNotification('notification-success-request')
+                : displayNotification('notification-error-request')
 
         } catch (error) {
             console.error(error);
-            displayNotification('notification-error-res');
+            displayNotification('notification-error-request');
         }
 
-        userData = await getDataFromApi(config.apiURL, "GET");
+        userData = await getData(config.apiURL);
     }
 
-    const table = document.querySelector(config.parent + " table");
-    let searchQuery = document.querySelector("#searchQuery").value;
+    rebuildTable(config);
+}
 
-    (searchQuery !== "")
-        ? initSearch(table, config, userData, searchQuery)
-        : rebuildTable(table, userData, config, true);
 
-    setTimeout(clearNotifications, 1000);
+function updateLocalData(method) {
+    if (method === "post") {
+        let id = Math.max(...userData.map(item => item.id));
+        data.id = ++id;
+        userData.push(data);
+    }
+
+    if (method === "put") {
+        Object.assign(userData.find(item => item.id === id), data);
+    }
+
+    if (method === "delete") {
+        userData = userData.filter(dataRow => dataRow.id !== id);
+    }
 }
 
 
@@ -169,7 +193,8 @@ function addHeader(config) {
 }
 
 
-function renderTable(table, data, config) {
+function renderTable(config, data) {
+    const table = document.querySelector(config.parent + " table");
     const tbody = createHtmlElement("tbody", table);
     let index = 0;
 
@@ -178,6 +203,7 @@ function renderTable(table, data, config) {
     });
 
     table.appendChild(tbody);
+    setTimeout(clearNotifications, NOTIFICATION_TIMEOUT);
 
     return table;
 }
@@ -187,14 +213,14 @@ function buildTableDataRows(config, dataRow, index) {
     const tr = document.createElement("tr");
 
     config.columns.forEach(function (column) {
-        createElementByColumnType(tr, column, dataRow, index, config);
+        createElementByColumnType(config, tr, column, dataRow, index);
     });
 
     return tr;
 }
 
 
-function createElementByColumnType(tr, column, dataRow, index, config) {
+function createElementByColumnType(config, tr, column, dataRow, index) {
     let innerHtml = dataRow[column.value];
     let td;
     let element;
@@ -224,41 +250,41 @@ function createElementByColumnType(tr, column, dataRow, index, config) {
             element = createHtmlElement("td", tr, innerHtml, null, "align-right");
             break;
 
-        case "buttons" :
+        case "actions" :
+            let btnArr = [];
             element = createHtmlElement("td", tr, null, null, null);
             const div = createHtmlElement("div", element,
                 null, null, "mybtn-col-group");
-            const delBtn = createHtmlElement("button", div, "Удалить",
-                null, "mybtn-danger");
-
-            delBtn.onclick = () => {
-                if (confirm("Удалить?")) {
-                    deleteUser(config, dataRow.id);
-                }
-            };
-
-            const editBtn = createHtmlElement("button", div, "Редактировать",
-                null, "mybtn-warning");
-
-            editBtn.onclick = () => {
-                editUser(config, dataRow);
-            };
-            break;
-
-        case "number" :
-            element = createHtmlElement("td", tr, date, null, "align-right");
+            btnArr.push(createHtmlElement("button", div, "Удалить",
+                null, "mybtn-danger"));
+            btnArr.push(createHtmlElement("button", div, "Редактировать",
+                null, "mybtn-warning"));
+            addActions(config, dataRow, btnArr);
             break;
 
         default :
             element = createHtmlElement("td", tr, innerHtml, null, null);
     }
+}
 
-    return element
+
+function addActions(config, dataRow, btnArr) {
+    const delBtn = btnArr[0];
+    const editBtn = btnArr[1];
+
+    delBtn.onclick = async () => {
+        if (confirm("Удалить?")) {
+            await sendRequest(config, config.apiURL + "/" + dataRow.id, "DELETE", dataRow.id);
+        }
+    };
+
+    editBtn.onclick = () => {
+        editUser(config, dataRow);
+    };
 }
 
 
 function addSortBtns(config, table, data) {
-
     config.columns.forEach(function (column, i) {
         const th = table.querySelectorAll("th");
         columnSortStates.push(0); // 0 - default sort state fo each table column
@@ -273,24 +299,22 @@ function addSortBtns(config, table, data) {
 
                 columnSortStates[i] = changeSortState(config, btn, i, columnSortStates[i]);
 
-                if (columnSortStates[i] === 1) {
-                    sortData = sortColumn(column, 1, sortData); // data in column will be sort up
-                }
+                // if (columnSortStates[i] === 1) {
+                //     sortData = sortColumn(column, 1, sortData); // data in column will be sort up
+                // }
+                //
+                // if (columnSortStates[i] === 2) {
+                //     sortData = sortColumn(column, -1, sortData); // data in column will be sort down
+                // }
+                //
+                // if (columnSortStates[i] === 0 && (!columnSortStates.includes(1) || !columnSortStates.includes(2))) {
+                //     sortData = data; // data in column will be set to default values
+                // }
 
-                if (columnSortStates[i] === 2) {
-                    sortData = sortColumn(column, -1, sortData); // data in column will be sort down
-                }
-
-                if (columnSortStates[i] === 0 && (!columnSortStates.includes(1) || !columnSortStates.includes(2))) {
-                    sortData = data; // data in column will be set to default values
-                }
-
-                rebuildTable(table, sortData, config);
+                rebuildTable(config);
             };
         }
     });
-
-    return columnSortStates;
 }
 
 
@@ -310,17 +334,27 @@ function sortColumn(columnData, coef, sortData) {
 }
 
 
-function rebuildTable(table, newData, config, clearFindData) {
-    if (clearFindData) {
-        findData = [];
-        userData = newData;
-    }
+function rebuildTable(config) {
+    const table = document.querySelector(config.parent + " table");
+    table.querySelector(" tbody").remove();
 
-    if (document.querySelector("#searchQuery").value === "" && userData.length) {
+    const searchQuery = document.querySelector("#searchQuery").value;
+    let newData;
+
+    if (searchQuery !== "") {
+        findData = initSearch(config, searchQuery);
+        newData = findData;
+
+    } else {
+        findData = [];
         newData = userData;
     }
 
-    table.querySelector(" tbody").remove();
+    newData = sortData(config, newData);
+    renderTable(config, newData);
+}
+
+function sortData(config, newData) {
     let sortedColumn = [];
 
     columnSortStates.filter((column, index, array) => {
@@ -332,7 +366,7 @@ function rebuildTable(table, newData, config, clearFindData) {
         newData = sortColumn(config.columns[sortedColumn[0]], sortCoef, newData);
     }
 
-    renderTable(table, newData, config);
+    return newData;
 }
 
 
@@ -340,7 +374,6 @@ function rebuildTable(table, newData, config, clearFindData) {
 function changeSortState(config, btn, columnIndex, prevState) {
     let btnClasses = btn.classList;
     let newState = (prevState === 0 || prevState === 1) ? ++prevState : 0;
-
     // changes current sort-buttons classes for display the correct icon
     btnClasses.forEach(btnClass => {
         if (btnClass.includes("fa-")) {
@@ -376,7 +409,7 @@ function actualizeBtnStatuses(config, columnIndex) {
 }
 
 
-function addSearchFiled(config, data) {
+function addSearchFiled(config) {
     const tableContainer = document.querySelector(config.parent);
     const searchContainer = createHtmlElement("div", tableContainer, null,
         null, "table-search");
@@ -385,38 +418,28 @@ function addSearchFiled(config, data) {
     searchInput.focus();
 
     searchInput.oninput = () => {
-        data = (userData.length) ? userData : data;
-        const table = document.querySelector(config.parent + " table");
-
-        (searchInput.value !== "")
-            ? initSearch(table, config, data, searchInput.value)
-            : rebuildTable(table, data, config, true);
+        rebuildTable(config);
     };
 }
 
 
-function initSearch(table, config, data, query) {
-    let searchResult;
-
+function initSearch(config, query) {
     // check config columns for "search" and "fields"
     if (config.search && config.search.fields && config.search.fields.length > 0) {
-        searchResult = searchData(config, config.search.fields, data, query);
+        return findData = searchData(config, config.search.fields, query);
 
     } else {
-        searchResult = searchData(config, null, data, query);
+        return findData = searchData(config, null, query);
     }
-
-    findData = searchResult;
-    rebuildTable(table, searchResult, config);
 }
 
 
-function searchData(config, fields, data, query) {
+function searchData(config, fields, query) {
     // if no columns for search in function arguments to searchFields will be included all config' columns
     const searchFields = (fields != null) ? fields : config.columns.map(item => item.value);
     const inputFilters = (config.search && config.search.filters) ? config.search.filters : [(v => v)];
 
-    return data.filter(el => {
+    return userData.filter(el => {
         return searchFields.filter(columnName => {
             return inputFilters.filter(
                 currentFilter => currentFilter(el[columnName] + "").indexOf(currentFilter(query)) !== -1).length;
@@ -425,40 +448,14 @@ function searchData(config, fields, data, query) {
 }
 
 
-async function deleteUser(config, id) {
-    let data;
-
-    if (config.apiURL) {
-        data = await getDataFromApi(config.apiURL + "/" + id, "DELETE");
-
-        if (data.length) {
-            throw new Error("Not found");
-        }
-
-        userData = await getDataFromApi(config.apiURL, "GET");
-    } else if (localMode) {
-        userData = userData.filter(dataRow => dataRow.id !== id);
-    } else {
-        throw new Error("Ошибка. Сonfig не содержит apiURL для отправки запроса");
-    }
-
-    const table = document.querySelector(config.parent + " table");
-    const searchQuery = document.querySelector("#searchQuery").value;
-    (searchQuery !== "") ? initSearch(table, config, userData, searchQuery) : rebuildTable(table, userData, config);
-}
-
-
-function prepareModalWindow(config) {
+function prepareModalWindow() {
     const modalHeader = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header");
 
     while (modalHeader.firstChild) {
         modalHeader.removeChild(modalHeader.firstChild);
     }
 
-    const h3 = createHtmlElement("h3", modalHeader, "Добавить пользователя на ");
-    createHtmlElement("a", h3, config.apiURL,
-        new Map([["href", config.apiURL], ["target", "_blanc"]]));
-
+    createHtmlElement("h3", modalHeader, "Добавить пользователя на сайт");
     const modalFooter = document.querySelector(USER_MODAL_WINDOW_ID + " .add-user-modal-footer");
 
     while (modalFooter.firstChild) {
@@ -471,27 +468,33 @@ function prepareModalWindow(config) {
     createHtmlElement("button", btnRowContainer, "Отправить",
         new Map([["type", "submit"]]), "mybtn-success modal-send-btn");
 
-    createHtmlElement("button", btnRowContainer, "Cancel",
+    const cancelBtn = createHtmlElement("button", btnRowContainer, "Отменить",
         new Map([["id", "modalCancelBtn"]]), "mybtn-danger");
 
-    createOpenFormBtn(config);
+    cancelBtn.onclick = () => {
+        closeModalWindow(document.querySelector(USER_MODAL_WINDOW_ID));
+    };
+
 }
 
 
 function createOpenFormBtn(config) {
     const tableContainer = document.querySelector(config.parent);
     let openFormBtn = document.querySelector("#openForm");
+    const modal = document.querySelector(USER_MODAL_WINDOW_ID);
 
     if (openFormBtn === null) {
         openFormBtn = createHtmlElement("button", tableContainer, "Добавить",
-            new Map([["id", "openForm"]]), "mybtn-primary border-round-5 add-btn");
+            new Map([["id", "openForm"]]), "mybtn-primary border-round-5 add-btn modal-trigger");
     }
 
     openFormBtn.onclick = () => {
         removeForm();
-        prepareModalWindow(config);
+        prepareModalWindow();
         addForm(config);
-        showModal();
+        clearNotifications();
+        showModalWindow(modal);
+        document.querySelector(USER_MODAL_WINDOW_ID + " form input").focus();
     };
 }
 
@@ -500,7 +503,7 @@ function addForm(config) {
     const modalContainer = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content");
     modalContainer.classList.add("container");
     const form = createHtmlElement("form", modalContainer, null,
-        new Map([["id", "userForm"],
+        new Map([["id", "userInfo"],
             ["method", "post"],
             ["enctype", "multipart/form-data"]]), null);
 
@@ -511,13 +514,11 @@ function addForm(config) {
         let size = SIZE_INPUT_TEXT;
         let placeholder = column.title;
         let required = ["required", ""];
-        let label = false;
 
         if (column.editable !== false) {
             if (column.type === 'datetime-local') {
                 type = "date";
                 size = "";
-                label = true;
             }
 
             if (column.type === 'url-jpg') {
@@ -528,9 +529,7 @@ function addForm(config) {
                 size = SIZE_INPUT_URL;
             }
 
-            if (label) {
-                createHtmlElement("label", form, column.title, null, null);
-            }
+            createHtmlElement("label", form, column.title, new Map([["for", column.value]]), null);
 
             createHtmlElement("input", form, null,
                 new Map([["id", column.value],
@@ -568,61 +567,50 @@ function addFormActions(config, hasImg) {
         };
     }
 
-    const cancelBtn = document.querySelector("#modalCancelBtn");
-
-    cancelBtn.onclick = () => {
-        document.querySelector(USER_MODAL_WINDOW_ID).classList.remove("modal-active");
-        document.querySelector(USER_MODAL_WINDOW_ID).classList.add("modal-hidden");
-    };
-
+    const form = document.querySelector("#userInfo");
     const sendBtn = document.querySelector(".modal-send-btn");
 
-    sendBtn.onclick = () => {
-        if (document.forms[0].reportValidity()) {
-            displayNotification('notification-success');
-            sendFormData(document.forms[0], config, config.apiURL, "POST");
-            document.forms[0].querySelector(".user-img").setAttribute("src", "");
-            document.forms[0].reset();
-            document.forms[0].firstChild.focus();
+    sendBtn.onclick = async () => {
+        if (form.reportValidity()) {
+            displayNotification('notification-success-form');
+            await sendRequest(config, config.apiURL, "POST", null, form);
+            form.querySelector(".user-img").setAttribute("src", "");
+            form.reset();
+            form.querySelector("input").focus();
 
         } else {
-            displayNotification('notification-error');
+            displayNotification('notification-error-form');
         }
     }
-}
-
-
-function showModal() {
-    clearNotifications();
-    document.querySelector(USER_MODAL_WINDOW_ID).classList.remove("modal-hidden");
-    document.querySelector(USER_MODAL_WINDOW_ID).classList.add("modal-active");
-    document.querySelector(USER_MODAL_WINDOW_ID + " form input").focus();
 }
 
 
 function clearNotifications() {
     const container = document.querySelector('#notifications');
 
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
+    if (container) {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
     }
 }
 
 
 function editUser(config, dataRow) {
+    prepareModalWindow();
     document.querySelector(USER_MODAL_WINDOW_ID + " .modal-header h3").innerHTML
         = "Редактировать пользователя (id " + dataRow.id + ")";
     const sendBtn = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-send-btn");
     sendBtn.innerHTML = "Сохранить";
-
     removeForm();
     const form = addForm(config);
     document.querySelector(USER_MODAL_WINDOW_ID + " [type=reset]").innerHTML = "Вернуть как было";
 
     const inputElements = form.querySelectorAll("input");
-    inputElements.forEach(el => {
 
+    inputElements.forEach(el => {
         let currentVal = dataRow[el.id];
+
         if (el.type === "date") {
             currentVal = new Date(dataRow[el.id]).toISOString().slice(0, 10);
         }
@@ -633,28 +621,27 @@ function editUser(config, dataRow) {
         el.setAttribute("value", currentVal);
     });
 
-    showModal();
+    let data = new FormData(form);
+    data.set(data.createdAt, new Date().toISOString());
+    const modal = document.querySelector(USER_MODAL_WINDOW_ID);
 
-    const url = config.apiURL + "/" + dataRow.id;
+    showModalWindow(modal);
+
     sendBtn.onclick = () => {
         if (form.reportValidity()) {
-            displayNotification('notification-success');
-            sendFormData(form, config, url, "PUT", dataRow.id);
+            displayNotification('notification-success-form');
+            sendRequest(config, config.apiURL + "/" + dataRow.id, "PUT", dataRow.id, form);
 
         } else {
-            displayNotification('notification-error');
+            displayNotification('notification-error-form');
         }
     }
 }
 
 
 function displayNotification(messageClass) {
-    let msgContainer;
-    document.querySelector("#notifications").appendChild(
-        msgContainer = document.createElement('div'));
-
-    msgContainer.classList.add(messageClass);
-
+    const notifyContainer = document.querySelector("#notifications");
+    createHtmlElement("div", notifyContainer, notification[messageClass], null, messageClass);
 }
 
 
@@ -662,9 +649,6 @@ function removeForm() {
     const form = document.querySelector(USER_MODAL_WINDOW_ID + " .modal-content form");
 
     if (form) {
-        while (form.firstChild) {
-            form.removeChild(form.firstChild);
-        }
         form.remove();
     }
 }
@@ -677,7 +661,8 @@ function calculateAge(birthday) {
     const birthdayDay = new Date(birthday).getDate();
     let age = currentDate.getFullYear() - birthdayYear + (currentDate.getMonth() - birthdayMonth) / 12 +
         (currentDate.getDate() - birthdayDay) / 365;
-    return Math.round(age * 100) / 100;
+
+    return (age < 1) ? "менее 1 года" : Math.trunc(age);
 }
 
 
