@@ -3,61 +3,69 @@ import {createHtmlElement} from "./main.js";
 // Get the HTML collection with all modal windows
 const modalWindowArr = document.querySelectorAll(".modal");
 
-// Get the button that opens the modal
-document.querySelector("#modal-open").onclick = () => {
-    document.querySelector(".modal").classList.remove("modal-hidden");
-    document.querySelector(".modal").classList.add("modal-active");
-};
+Modal(modalWindowArr);
 
+function Modal(modalWindowArr) {
+    // Get the button that opens the modal
+    document.querySelector(".modal-trigger").onclick = () => {
+        //  document.querySelector(".modal").classList.remove("hidden");
+        document.querySelector(".modal").classList.add("active");
+    };
 
-for (let counter = 0; counter < modalWindowArr.length; counter++) {
-    addElements(modalWindowArr[counter], counter);
+    modalWindowArr.forEach((modal, index) => {
+        addElements(modal, index, modalWindowArr);
+    });
 }
 
 
-function addElements(modalWindow, counter) {
+function addElements(modalWindow, index, modalWindowArr) {
     // Append close button in right-top corner of the modal window
-    let topCloseBtn = createHtmlElement("button", modalWindow, "X",
-        new Map([["id", `${counter}`]]), "top-close-btn");
+    const topCloseBtn = createHtmlElement("button", modalWindow, "X",
+        new Map([["id", `${index}`]]), "top-close-btn");
 
     topCloseBtn.onclick = () => {
-        document.querySelector("#send" + counter).classList.remove("modal-active");
-        document.querySelector("#send" + counter).classList.add("modal-hidden");
+        modalWindow.classList.remove("active");
     };
 
-    let footer = document.getElementsByClassName("modal-footer")[counter];
+    const footer = modalWindow.querySelector(".modal-footer");
 
     if (footer.classList.length === 1) {
-        if (counter < modalWindowArr.length - 1) {
-            let bottomBtn = createHtmlElement("button", footer, "Показать другую инфу",
-                new Map([["id", "modal" + `${counter}`]]), "mybtn-info border-round-5 show-another-btn");
+        if (index < modalWindowArr.length - 1) {
+            const showNextModalBtn = createHtmlElement("button", footer, "Показать другую инфу",
+                new Map([["id", "modal" + `${index}`]]), "mybtn-info border-round-5 show-another-btn");
 
-            bottomBtn.onclick = () => {
-                showNextModal(modalWindow, counter);
+            showNextModalBtn.onclick = () => {
+                showNextModalWindow(modalWindowArr, document, index);
             };
         }
 
-        const closeBtnClass = (counter === modalWindowArr.length - 1) ? "bottom-close-btn-last mybtn-primary border-round-5" :
-            "bottom-close-btn mybtn-primary border-round-5";
+        const closeBtnClass = (index === modalWindowArr.length - 1)
+            ? "bottom-close-btn-last mybtn-primary border-round-5"
+            : "bottom-close-btn mybtn-primary border-round-5";
 
-        let closeBtn = createHtmlElement("button", footer, "Понятно",
+        const closeAllModalBtn = createHtmlElement("button", footer, "Понятно",
             null, closeBtnClass);
 
-        closeBtn.onclick = () => {
-            closeAll();
+        closeAllModalBtn.onclick = () => {
+            closeAllModal(modalWindowArr);
         };
     }
 }
 
-function showNextModal(modalWindow, counter) {
-    counter++;
-    modalWindowArr[counter].classList.remove("modal-hidden");
-    modalWindowArr[counter].classList.add("modal-active");
-    addElements(modalWindowArr[counter], counter);
+function showNextModalWindow(modal, parent, index) {
+    modal[++index].classList.add("active");
 }
 
-function closeAll() {
-    for (let i = 0; i < modalWindowArr.length; i++) {
-        document.querySelector("#send" + i).classList.add("modal-hidden");
-    }
+function closeAllModal(modalWindowArr) {
+    modalWindowArr.forEach((modal) => {
+        modal.classList.remove("active");
+    });
+}
+
+export function showModalWindow(modal) {
+    modal.classList.add("active");
+}
+
+export function closeModalWindow(modal) {
+    modal.classList.remove("active");
 }
