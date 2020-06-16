@@ -80,8 +80,8 @@ async function DataTable(config, data) {
     createOpenFormBtn(config);
 
     if (data) {
-        userData = data;
         localMode = true;
+        userData = (userData.length) ? userData : data;
     }
 
     const buildData = await getData(config.apiURL);
@@ -122,7 +122,7 @@ async function getData(url) {
 
 async function sendRequest(config, url, method, id, form) {
     if (localMode) {
-        updateLocalData(method.toLowerCase());
+        updateLocalData(config, method.toLowerCase(), id, form);
 
     } else {
         method = method.toLowerCase();
@@ -161,7 +161,22 @@ async function sendRequest(config, url, method, id, form) {
 }
 
 
-function updateLocalData(method) {
+function updateLocalData(config, method, id, form) {
+    let data = {};
+
+    if (form) {
+        config.columns.forEach((column) => {
+            if (column.editable !== false) {
+                data[column.value] = form.querySelector("#" + column.value).value;
+            }
+
+            if (column.value === "createdAt") {
+                data[column.value] = new Date().toISOString();
+            }
+        });
+    }
+
+
     if (method === "post") {
         let id = Math.max(...userData.map(item => item.id));
         data.id = ++id;
@@ -175,6 +190,8 @@ function updateLocalData(method) {
     if (method === "delete") {
         userData = userData.filter(dataRow => dataRow.id !== id);
     }
+
+    rebuildTable(config);
 }
 
 
