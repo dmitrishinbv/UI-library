@@ -126,6 +126,7 @@
 <div id="carousel" class="carousel"></div>
 <hr>
 <h2> Input </h2>
+
 <div id="app">
     <my-input
             v-for="q in questions"
@@ -134,7 +135,16 @@
             :title="q.title"
             :placeholder="q.placeholder"
             :required="q.required"
+            :name="q.name"
+
     />
+
+<!--    <p v-if="errors.length">-->
+<!--        <b>Пожалуйста исправьте указанные ошибки:</b>-->
+<!--    <ul>-->
+<!--        <li v-for="error in errors">{{ error }}</li>-->
+<!--    </ul>-->
+<!--    </p>-->
 </div>
 <script src="js/my-input.js"></script>
 <script>
@@ -142,12 +152,13 @@
         el: '#app',
         data: {
             questions: [
-                {title: "Как тебя зовут?", placeholder: "Иван", required: true},
-                {title: "Сколько тебе лет?", placeholder: "15", type: "number"},
-                {title: "Твой email", placeholder: "ivan@example.com", required: true}
+                {title: "Как тебя зовут?", placeholder: "Иван", required: true, name: "name"},
+                {title: "Сколько тебе лет?", placeholder: "15", type: "number", name: "age"},
+                {title: "Твой email", placeholder: "ivan@example.com", required: true, name: "email"}
             ]
         }
     })
+
 </script>
 <hr>
 <h2>User table</h2>
