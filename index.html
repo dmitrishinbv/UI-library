@@ -9,9 +9,11 @@
     <link rel="stylesheet/less" type="text/css" href="styles/burger.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/modal.less"/>
     <link rel="stylesheet/less" type="text/css" href="styles/usersTable.less"/>
+    <link rel="stylesheet/less" type="text/css" href="styles/my-input.less"/>
     <link rel="stylesheet" type="text/css" href="styles/grid.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
     <script src="https://kit.fontawesome.com/a92211bf3b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <style>
         h2, h3, h4 {
             text-align: center;
@@ -39,7 +41,7 @@
     </ul>
 </nav>
 <div class="centered mt-40">
-<!--    <button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>-->
+    <!--    <button class="mybtn-primary large border-round-5 modal-trigger" id="modal-open">Click Me</button>-->
     <button class="mybtn-primary large border-round-5 modal-trigger">Click Me</button>
 </div>
 <hr>
@@ -122,6 +124,49 @@
     <button class="mybtn-info border-round-5 counter-submit" id="3" onclick="newNum (this)">3</button>
 </div>
 <div id="carousel" class="carousel"></div>
+<hr>
+<h2> Input </h2>
+
+<div id="app">
+    <div class="example">
+    <span>Example of react v-model for field "name"  </span>
+    <input v-model="inputValues['name']">
+    </div>
+    <my-input
+            v-for="q in questions"
+            :key="q.title"
+            :title="q.title"
+            :placeholder="q.placeholder"
+            :required="q.required"
+            :pattern="q.pattern"
+            :error="q.error"
+            :name="q.name"
+            v-model="inputValues[q.name]"
+    />
+</div>
+<script src="js/my-input.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            questions: [
+                {title: "Как тебя зовут?", placeholder: "Иван", required: true, name: "name",
+                    pattern: "^[A-Za-zА-Яа-яІіЄєЇїҐґ'\\-|\\s]+$", error: "Please, use only letters, space or hyphen"},
+                {title: "Сколько тебе лет?", placeholder: "15", name: "age", pattern: "^[0-9]+$",
+                    error: "Please, enter value from range 0-130"},
+                {title: "Твой email", placeholder: "ivan@example.com", required: true, name: "email",
+                    pattern: "^\\w+@(\\w+\\.)+\\w+$", error: "Please, enter email in required format (see example ivan@example.com)"}
+            ],
+
+            inputValues: {
+            "name": "",
+            "age": "",
+            "email": ""
+    }
+        }
+    })
+
+</script>
 <hr>
 <h2>User table</h2>
 <div id="usersTable" class="users-table"></div>
