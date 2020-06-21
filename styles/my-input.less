@@ -14,6 +14,7 @@
 
   input {
     margin-bottom: 10px;
+    padding-bottom: 2px;
     border: 1px solid #17a2b8;
     box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
 
@@ -30,8 +31,20 @@
   }
 
  .input-error {
+   text-decoration-line: underline;
+   text-decoration-style: dashed;
+   text-decoration-color: red;
+  }
+
+  .error-msg {
     color: red;
   }
+}
+
+.example {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 576px) {

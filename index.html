@@ -128,23 +128,21 @@
 <h2> Input </h2>
 
 <div id="app">
+    <div class="example">
+    <span>Example of react v-model for field "name"  </span>
+    <input v-model="inputValues['name']">
+    </div>
     <my-input
             v-for="q in questions"
             :key="q.title"
-            :type="q.type"
             :title="q.title"
             :placeholder="q.placeholder"
             :required="q.required"
+            :pattern="q.pattern"
+            :error="q.error"
             :name="q.name"
-
+            v-model="inputValues[q.name]"
     />
-
-<!--    <p v-if="errors.length">-->
-<!--        <b>Пожалуйста исправьте указанные ошибки:</b>-->
-<!--    <ul>-->
-<!--        <li v-for="error in errors">{{ error }}</li>-->
-<!--    </ul>-->
-<!--    </p>-->
 </div>
 <script src="js/my-input.js"></script>
 <script>
@@ -152,10 +150,19 @@
         el: '#app',
         data: {
             questions: [
-                {title: "Как тебя зовут?", placeholder: "Иван", required: true, name: "name"},
-                {title: "Сколько тебе лет?", placeholder: "15", type: "number", name: "age"},
-                {title: "Твой email", placeholder: "ivan@example.com", required: true, name: "email"}
-            ]
+                {title: "Как тебя зовут?", placeholder: "Иван", required: true, name: "name",
+                    pattern: "^[A-Za-zА-Яа-яІіЄєЇїҐґ'\\-|\\s]+$", error: "Please, use only letters, space or hyphen"},
+                {title: "Сколько тебе лет?", placeholder: "15", name: "age", pattern: "^[0-9]+$",
+                    error: "Please, enter value from range 0-130"},
+                {title: "Твой email", placeholder: "ivan@example.com", required: true, name: "email",
+                    pattern: "^\\w+@(\\w+\\.)+\\w+$", error: "Please, enter email in required format (see example ivan@example.com)"}
+            ],
+
+            inputValues: {
+            "name": "",
+            "age": "",
+            "email": ""
+    }
         }
     })
 
