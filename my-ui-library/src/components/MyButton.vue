@@ -1,0 +1,129 @@
+<template>
+    <div class="mybuttons">
+         <button @click= "$emit('click', $event.target)" :class="'mybtn-'+color+' '+size+' '+border">
+            {{ btntext }}</button>
+    </div>
+</template>
+
+
+<script lang="ts">
+  import Vue from 'vue';
+
+  export default Vue.extend({
+    name: 'MyButton',
+    props: {
+        btntext: {
+            type: String,
+        },
+        size: {
+            type: String,
+            default: 'large',
+        },
+        color: {
+            type: String,
+            default: 'primary',
+        },
+        border: {
+            type: String,
+            default: "",
+        },
+    },
+  });
+</script>
+
+<style lang="less">
+    .mybtn {
+        display: inline-block;
+        font-family: Helvetica, sans-serif;
+        cursor: default;
+        padding: 1vh 1vw;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.7;
+            box-shadow: 0 0 10px gray;
+        }
+
+        &:active {
+            opacity: 1;
+        }
+    }
+
+    .mybtn-col-group {
+        display: inline-flex;
+        font-family: Helvetica, sans-serif;
+        flex-direction: column;
+        align-items: inherit;
+        justify-content: end;
+        cursor: default;
+        text-decoration: none;
+    }
+
+    .mybtn-row-group {
+        display: inline-flex;
+        font-family: Helvetica, sans-serif;
+        align-items: center;
+        cursor: default;
+        text-decoration: none;
+    }
+
+    .mybtn-col-group + .mybtn-col-group {
+        margin-top: .5rem
+    }
+
+    .mybtn-row-group + .mybtn-row-group {
+        margin-left: .5rem;
+    }
+
+
+    .border-round-5 {
+        border-radius: 5px;
+    }
+
+    .border-round-10 {
+        border-radius: 10px;
+    }
+
+    .disabled, .mybtn:disabled {
+        opacity: 0.4;
+    }
+
+    @mybtn_names: dark, primary, secondary, success, danger, warning, info, light, link;
+    @bg_colors: black, blue, gray, green, red, yellow, #17a2b8, #f8f9fa, white;
+    @text_colors: white, white, white, white, white, black, white, black, blue;
+
+    each(@mybtn_names, {
+    @index = 1;
+        .mybtn-@{value} {
+            .mybtn;
+            background-color: extract(@bg_colors, @index);
+            color: extract(@text_colors, @index);
+        }
+    @index = @index + 1;
+    });
+
+    .mybtn-link:hover {
+        text-decoration: underline;
+    }
+
+    .mybtn-link:active {
+        color: #7d5eff;
+    }
+
+    .mybtn-link:visited {
+        color: #b6b2de;
+    }
+
+    @btn_sizes_names: extrasmall, small, standard, medium, large, extralarge;
+    @btn_sizes: 0.5, 0.75, 1, 1.25, 1.5, 2;
+
+    each(@btn_sizes_names, {
+    @index = 1;
+        .@{value} {
+            font-size: 100% * extract(@btn_sizes, @index);
+        }
+    @index = @index + 1;
+    });
+
+</style>
