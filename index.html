@@ -134,15 +134,17 @@
     </div>
     <my-input
             v-for="q in questions"
-            :key="q.title"
+            :id="q.title"
             :title="q.title"
             :placeholder="q.placeholder"
             :required="q.required"
             :pattern="q.pattern"
             :error="q.error"
             :name="q.name"
+            :type="q.type"
             v-model="inputValues[q.name]"
-    />
+            :validation="validation"
+            />
 </div>
 <script src="js/my-input.js"></script>
 <script>
@@ -151,18 +153,24 @@
         data: {
             questions: [
                 {title: "Как тебя зовут?", placeholder: "Иван", required: true, name: "name",
-                    pattern: "^[A-Za-zА-Яа-яІіЄєЇїҐґ'\\-|\\s]+$", error: "Please, use only letters, space or hyphen"},
-                {title: "Сколько тебе лет?", placeholder: "15", name: "age", pattern: "^[0-9]+$",
+                    pattern: /^[A-Za-zА-Яа-яІіЄєЇїҐґ'\\-|\\s]+$/, error: "Please, use only letters, space or hyphen"},
+                {title: "Сколько тебе лет?", placeholder: "15", name: "age", type: "number",
                     error: "Please, enter value from range 0-130"},
                 {title: "Твой email", placeholder: "ivan@example.com", required: true, name: "email",
-                    pattern: "^\\w+@(\\w+\\.)+\\w+$", error: "Please, enter email in required format (see example ivan@example.com)"}
+                    pattern: /^\\w+@(\\w+\\.)+\\w+$/, error: "Please, enter email in required format (see example ivan@example.com)"}
             ],
 
             inputValues: {
-            "name": "",
-            "age": "",
-            "email": ""
-    }
+            name: "",
+            age: "",
+            email: ""
+    },
+        },
+        computed: {
+            validation: function () {
+                const age = this.inputValues['age'];
+                return age >= 0 && age <= 130;
+            }
         }
     })
 
