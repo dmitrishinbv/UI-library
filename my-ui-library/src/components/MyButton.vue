@@ -2,6 +2,7 @@
     <div class="mybuttons">
          <button @click= "$emit('click', $event.target)" :class="'mybtn-'+color+' '+size+' '+border">
             {{ btntext }}</button>
+        <slot></slot>
     </div>
 </template>
 
