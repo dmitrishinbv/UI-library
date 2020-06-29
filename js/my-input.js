@@ -1,10 +1,16 @@
-const MIN_AGE = 0;
-const MAX_AGE = 130;
 const ERROR_MSG_TEXT = "Field has incorrect value or illegal symbols";
+const DEFAULT_ERROR = "This field is required";
 
 Vue.component('my-input', {
     props: {
+        validation: {
+            type: Boolean,
+        },
         title: {
+            type: String,
+            required: true,
+        },
+        id: {
             type: String,
             required: true,
         },
@@ -16,13 +22,17 @@ Vue.component('my-input', {
             type: String,
             required: false,
         },
+        type: {
+            type: String,
+            required: false,
+        },
         required: {
             type: Boolean,
             required: false,
             default: false
         },
         pattern: {
-            type: String,
+            type: RegExp,
             required: false,
         },
         value: {
@@ -32,7 +42,11 @@ Vue.component('my-input', {
             type: String,
             default: ERROR_MSG_TEXT,
             required: false
-        }
+        },
+        defaultError: {
+            type: String,
+            default: DEFAULT_ERROR
+        },
     },
 
     template: `
@@ -41,47 +55,38 @@ Vue.component('my-input', {
    <span v-if="required">*</span><br>
    </label>
   <input      
-  @focus="discardErrors"
-  @blur="checkPattern($event.target.value, $event.target.required, $event.target.pattern)"
+
+  @blur="checkPattern($event.target.value)"
   @input="updateValue($event.target.value)"
     :placeholder="placeholder" 
     :required="required"
     :name="name"
     :pattern="pattern"
+    :type="type"
+    :defaultError="defaultError"
+    :validation="validation"
+    :id="id"
     :class="{'invalid': isInvalid, 'input-error': isInputError}"
     >
-    <span v-if="isInputError" class="error-msg">{{error}}</span>   
+    <span v-if="isInputError" class="error-msg">{{error}}</span>  
+    <span v-if="isInvalid" class="error-msg">{{defaultError}}</span>   
 </div>
 `,
 
     methods: {
-        checkPattern: function (value, required, pattern) {
-            console.log(pattern);
-            if (!value) {
-                this.isInputError = false; //placeholder text is always correct
-
-            } else {
-                pattern = new RegExp(pattern);
-                     this.isInputError = (this["name"] === "age")
-                    ? !pattern.test(value) || value < MIN_AGE || value > MAX_AGE
-                    : !pattern.test(value);
-            }
-
-            this.isInvalid = (required && !value);
+        checkPattern: function (value) {
+            this.isInputError = (!value) ? false : !value.match(this.pattern) || !this.validation;
+            this.isInvalid = (this.required && !value);
         },
 
         updateValue: function (value) {
+            this.isInvalid = this.isInputError = false;    // discards all errors when user typing
             this.$emit('input', value);
         },
-
-        // discards all errors when input filed in focus
-        discardErrors: function () {
-            this.isInvalid = this.isInputError = false;
-        }
     },
+
     data() {
         return {
-            inputValues: this.value,
             isInvalid: false, //true if required but empty field
             isInputError: false, //true if field has incorrect value or illegal symbols
         }
