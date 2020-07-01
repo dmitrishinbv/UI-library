@@ -38,8 +38,8 @@
         <Row>
             <Column class="grid-item" :cols='10'>
                 <Row>
-                <Column class="grid-item" :cols='6'>6 in cols10</Column>
-                <Column class="grid-item" :cols='6'>6 in cols10</Column>
+                    <Column class="grid-item" :cols='6'>6 in cols10</Column>
+                    <Column class="grid-item" :cols='6'>6 in cols10</Column>
                 </Row>
             </Column>
         </Row>
@@ -52,15 +52,30 @@
                 </Row>
             </Column>
         </Row>
+        <h2>Modal window example</h2>
+        <Modal>
+            <template v-slot:trigger></template>
+            <template v-slot:header>Modal header</template>
+            Modal content<br>
+            Modal content<br>
+            Modal content<br>
+            Modal content<br>
+            Modal content
+            <template v-slot:footer>
+                <MyButton @click="showEvent" color="success" border="border-round-5"
+                          size="standard" btntext="Отправить"/>
+            </template>
+        </Modal>
     </div>
 </template>
 
 <script>
     // @ is an alias to /src
-    import HelloWorld from '@/components/HelloWorld.vue'
-    import MyButton from '@/components/MyButton.vue'
-    import Row from '@/components/grid/Row.vue'
-    import Column from '@/components/grid/Column.vue'
+    import HelloWorld from '@/components/HelloWorld.vue';
+    import MyButton from '@/components/MyButton.vue';
+    import Modal from '@/components/Modal.vue';
+    import Row from '@/components/grid/Row.vue';
+    import Column from '@/components/grid/Column.vue';
 
     export default {
         name: 'Home',
@@ -68,25 +83,26 @@
             HelloWorld,
             MyButton,
             Row,
-            Column
+            Column,
+            Modal,
         },
         methods: {
             showEvent(e) {
-                alert(e);
+                alert('You pressed button ' +e);
             },
         },
         data() {
             return {
                 btncolors: ['dark', 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'link'],
                 btnsizes: ['extrasmall', 'small', 'standard', 'medium', 'large', 'extralarge'],
-            }
-        }
-    }
+            };
+        },
+    };
+
 </script>
 <style lang="less">
     #app {
-        background: url('https://i1.wp.com/singsmart.com/wp-content/uploads/2017/12/snow08.jpg?resize=300%2C300&ssl=1')
-        repeat;
+        background: url('https://i1.wp.com/singsmart.com/wp-content/uploads/2017/12/snow08.jpg?resize=300%2C300&ssl=1') repeat;
     }
 
     div, button {

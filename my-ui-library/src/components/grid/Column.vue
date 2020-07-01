@@ -7,7 +7,7 @@
 <script lang="ts">
 
     export default {
-        name: "Column",
+        name: 'Column',
         props: {
             cols: {
                 type: Number,

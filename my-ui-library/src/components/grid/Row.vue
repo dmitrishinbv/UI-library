@@ -7,8 +7,8 @@
 <script lang="ts">
     import Vue from 'vue';
     export  default Vue.extend ({
-        name: "Row"
-    })
+        name: 'Row',
+    });
 </script>
 
 <style lang="less">

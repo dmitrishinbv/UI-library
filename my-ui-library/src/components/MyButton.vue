@@ -26,7 +26,7 @@
         },
         border: {
             type: String,
-            default: "",
+            default: '',
         },
     },
   });
