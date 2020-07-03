@@ -39,6 +39,7 @@
                 type: String,
                 default: 'Отменить',
             },
+
         },
 
         methods: {

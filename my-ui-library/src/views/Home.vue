@@ -66,16 +66,22 @@
                           size="standard" btntext="Отправить"/>
             </template>
         </Modal>
+        <h2>Carousel</h2>
+        <Carousel :images=images :carouselWidth=carouselWidth :carouselHeight=carouselHeight />
+      <br>
     </div>
 </template>
 
 <script>
     // @ is an alias to /src
+   // import "kit.fontawesome.com/a92211bf3b.js";
     import HelloWorld from '@/components/HelloWorld.vue';
     import MyButton from '@/components/MyButton.vue';
     import Modal from '@/components/Modal.vue';
+    import Carousel from '@/components/Carousel.vue';
     import Row from '@/components/grid/Row.vue';
     import Column from '@/components/grid/Column.vue';
+
 
     export default {
         name: 'Home',
@@ -85,6 +91,7 @@
             Row,
             Column,
             Modal,
+            Carousel,
         },
         methods: {
             showEvent(e) {
@@ -95,6 +102,20 @@
             return {
                 btncolors: ['dark', 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'link'],
                 btnsizes: ['extrasmall', 'small', 'standard', 'medium', 'large', 'extralarge'],
+                images: ['https://loremflickr.com/320/240?random=1',
+                    'https://loremflickr.com/320/240?random=2',
+                    'https://loremflickr.com/320/240?random=3',
+                    'https://loremflickr.com/320/240?random=4',
+                    'https://loremflickr.com/320/240?random=5',
+                    'https://loremflickr.com/320/240?random=6',
+                    'https://loremflickr.com/320/240?random=7',
+                    'https://loremflickr.com/320/240?random=8',
+                    'https://loremflickr.com/320/240?random=9',
+                    'https://loremflickr.com/320/240?random=10',
+                ],
+                carouselWidth: 320,
+                carouselHeight: 240,
+
             };
         },
     };
@@ -120,5 +141,9 @@
         border-radius: 5px;
         border: 1px solid red;
         text-align: center;
+    }
+
+    i {
+        color: red;
     }
 </style>
