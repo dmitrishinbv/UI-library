@@ -2,10 +2,10 @@
     <div class='home'>
         <h1>My UI library</h1>
         <h2>Buttons examples</h2>
-        <div v-for='bsize in btnsizes'>
+        <div v-for="bsize in btnsizes">
             <h4>{{bsize}} series buttons</h4>
             <MyButton
-                    @click='showEvent' v-for='bcolor in btncolors' :color=bcolor :size=bsize :btntext='bcolor+' '+bsize'
+                    @click='showEvent' v-for="bcolor in btncolors" :color=bcolor :size=bsize :btntext="bcolor+' '+bsize"
             />
         </div>
         <h4 class='underline'>Default size and color with border-round btns</h4>
