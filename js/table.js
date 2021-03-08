@@ -33,7 +33,7 @@ const config1 = {
             v => toKeyboardLayout(v.toLowerCase())
         ]
     },
-    apiURL: "https://5e938231c7393c0016de48e6.mockapi.io/api/ps5/student"
+    apiURL: "https://60461bd1f0c6dc00177b158d.mockapi.io/api/ps5/student"
 };
 
 
